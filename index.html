@@ -1,0 +1,1056 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bir kahve, kaç karar? · kahvelerce</title>
+<meta name="description" content="Kahveni adım adım seç, sonunda tek bir kahve için kaç karar verdiğini gör.">
+<meta name="theme-color" content="#F5EFE6">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cg transform='rotate(30 16 16)'%3E%3Cellipse cx='16' cy='16' rx='10' ry='13' fill='%238E5D37'/%3E%3Cpath d='M16 5 C11 12 21 20 16 27' stroke='%23F5EFE6' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/g%3E%3C/svg%3E">
+<style>
+  :root {
+    color-scheme: light;
+    /* Kahvenin kendi tayfı: çiğ yeşilden koyu kavrulmuşa */
+    --roast-1: #A3AE71; /* çiğ çekirdek */
+    --roast-2: #C9B877; /* kuruma / sararma */
+    --roast-3: #BE8B4F; /* açık kavrum */
+    --roast-4: #8E5D37; /* orta kavrum */
+    --roast-5: #5C3A22; /* koyu kavrum */
+    --roast-6: #2F1E14; /* çok koyu */
+    --green-deep: #5F6B3A;
+    /* Ayırt edici vurgu: pas / kiremit */
+    --rust: #A6432A;
+    --rust-deep: #86331F;
+    --rust-tint: #F4DED4;
+    /* Zemin ve yazı */
+    --bg: #F5EFE6;
+    --paper: #FFFDF9;
+    --ink: #2B1B12;
+    --ink-soft: #6B5546;
+    --line: #E4D7C5;
+    --roast-gradient: linear-gradient(90deg, var(--roast-1), var(--roast-2) 22%, var(--roast-3) 45%, var(--roast-4) 66%, var(--roast-5) 84%, var(--roast-6));
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 17px;
+    line-height: 1.5;
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+  h1, h2, h3 { font-family: var(--serif); font-weight: 700; line-height: 1.12; letter-spacing: -0.01em; }
+  h2:focus, h1:focus { outline: none; }
+
+  /* Üst bar */
+  .top {
+    position: sticky; top: 0; z-index: 5;
+    background: rgba(245, 239, 230, 0.94);
+    -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+    padding-top: env(safe-area-inset-top);
+  }
+  .top-inner {
+    max-width: 560px; margin: 0 auto; padding: 12px 16px 10px;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  }
+  .brand { font-family: var(--serif); font-weight: 700; font-size: 1.15rem; color: var(--ink); text-decoration: none; }
+  .brand span { color: var(--ink-soft); font-weight: 400; }
+  .counter {
+    background: var(--rust); color: #fff; border-radius: 999px;
+    padding: 5px 13px; font-weight: 700; font-size: 0.95rem;
+    font-variant-numeric: tabular-nums; white-space: nowrap;
+  }
+  .counter.bump { animation: bump 0.35s ease; }
+  @keyframes bump { 40% { transform: scale(1.18); } }
+  .progress-wrap { max-width: 560px; margin: 0 auto; padding: 0 16px 10px; }
+  .progress {
+    position: relative; height: 8px; border-radius: 999px; overflow: hidden;
+    background: var(--roast-gradient);
+  }
+  .progress-cover {
+    position: absolute; top: 0; right: 0; bottom: 0; width: 100%;
+    background: var(--line); transition: width 0.4s ease;
+  }
+  [hidden] { display: none !important; }
+
+  /* Ekran */
+  .wrap { max-width: 560px; margin: 0 auto; padding: 0 16px calc(40px + env(safe-area-inset-bottom)); }
+  .screen { padding-top: 12px; transition: opacity 0.2s ease, transform 0.2s ease; }
+  .screen.out { opacity: 0; }
+  .screen.out.to-left { transform: translateX(-14px); }
+  .screen.out.to-right { transform: translateX(14px); }
+  .screen.pre { transition: none; opacity: 0; }
+  .screen.pre.from-right { transform: translateX(14px); }
+  .screen.pre.from-left { transform: translateX(-14px); }
+
+  /* Giriş */
+  .intro {
+    min-height: calc(100dvh - 90px);
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 16px 0 40px;
+  }
+  .intro-art svg { width: min(300px, 82vw); height: auto; display: block; margin: 0 0 14px -6px; }
+  .hello {
+    position: relative; align-self: flex-start; margin: 0;
+    background: var(--paper); border: 1.5px solid var(--ink); border-radius: 18px;
+    padding: 10px 18px; font-family: var(--serif); font-weight: 700; font-size: 1.3rem; line-height: 1.25;
+    box-shadow: 3px 3px 0 var(--rust-tint);
+  }
+  .hello::after {
+    content: ""; position: absolute; left: 24px; bottom: -9px; width: 16px; height: 16px;
+    background: var(--paper); border-right: 1.5px solid var(--ink); border-bottom: 1.5px solid var(--ink);
+    transform: rotate(45deg);
+  }
+  .hello-by { font-size: 0.85rem; font-style: italic; color: var(--ink-soft); margin: 14px 0 0 6px; }
+  .intro h1 { font-size: clamp(2.6rem, 11.5vw, 3.8rem); margin: 0.35em 0 0.3em; line-height: 1.02; }
+  .intro h1 em { font-style: normal; color: var(--rust); }
+  .lede { font-size: 1.15rem; margin: 0 0 28px; max-width: 30ch; }
+  .fine { font-size: 0.85rem; color: var(--ink-soft); margin: 14px 0 0; }
+
+  /* Butonlar */
+  .cta {
+    display: inline-flex; justify-content: center; align-items: center; gap: 8px;
+    min-height: 54px; padding: 14px 26px; border-radius: 999px;
+    background: var(--rust); color: #fff; border: 0;
+    font: inherit; font-weight: 700; text-decoration: none; cursor: pointer;
+    box-shadow: 0 2px 0 var(--rust-deep);
+    transition: background 0.15s, transform 0.1s;
+  }
+  .cta:hover { background: var(--rust-deep); }
+  .cta:disabled { opacity: 0.45; cursor: not-allowed; box-shadow: none; }
+  .cta:disabled:hover { background: var(--rust); }
+  .cta:active { transform: translateY(1px); box-shadow: none; }
+  .intro .cta { align-self: flex-start; min-width: 180px; font-size: 1.1rem; }
+  .ghost {
+    display: inline-flex; justify-content: center; align-items: center;
+    min-height: 52px; padding: 12px 22px; border-radius: 999px;
+    background: transparent; color: var(--ink); border: 1.5px solid var(--ink);
+    font: inherit; font-weight: 600; cursor: pointer;
+  }
+  .ghost:hover { background: var(--paper); }
+  .cta:focus-visible, .ghost:focus-visible, .back:focus-visible, .opt:focus-visible, .linkish:focus-visible {
+    outline: 3px solid var(--rust); outline-offset: 3px;
+  }
+  .back {
+    appearance: none; border: 0; background: none; color: var(--ink-soft);
+    font: inherit; font-size: 0.95rem; cursor: pointer;
+    min-height: 44px; padding: 8px 6px; margin: 0 0 2px -6px;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .back:hover { color: var(--ink); }
+
+  /* Soru */
+  .eyebrow {
+    font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--green-deep); font-weight: 700; margin: 6px 0 0;
+  }
+  .q-title { font-size: clamp(1.65rem, 6.5vw, 2.15rem); margin: 0.25em 0 0.4em; }
+  .hint {
+    color: var(--ink-soft); font-size: 0.98rem; margin: 0 0 22px;
+    padding-left: 12px; border-left: 3px solid var(--rust-tint);
+  }
+  .options { display: grid; gap: 10px; }
+  .options.cols-2 { grid-template-columns: repeat(2, 1fr); }
+  .options.cols-3 { grid-template-columns: repeat(3, 1fr); }
+  .opt {
+    appearance: none; width: 100%; min-height: 58px; padding: 14px 16px;
+    display: flex; align-items: center; gap: 12px; text-align: left;
+    border-radius: 14px; border: 1.5px solid var(--line); background: var(--paper);
+    color: var(--ink); font: inherit; font-weight: 600; cursor: pointer;
+    box-shadow: 0 1px 0 rgba(43, 27, 18, 0.05);
+    transition: border-color 0.15s, background 0.15s, transform 0.1s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .cols-2 .opt, .cols-3 .opt { justify-content: center; text-align: center; }
+  .opt:hover { border-color: var(--roast-3); }
+  .opt:active { transform: scale(0.985); }
+  .opt.picked { border-color: var(--rust); background: var(--rust-tint); }
+  .opt.was { border-color: var(--rust); }
+  .opt .txt { flex: 1; }
+  .cols-2 .opt .txt, .cols-3 .opt .txt { flex: initial; }
+  .opt small { display: block; font-weight: 400; color: var(--ink-soft); font-size: 0.88rem; margin-top: 2px; }
+  .sw { width: 20px; height: 20px; border-radius: 50%; flex: none; border: 1.5px solid rgba(43, 27, 18, 0.18); }
+  .tag {
+    font-style: normal; font-size: 0.72rem; font-weight: 700; color: var(--rust);
+    background: var(--rust-tint); border-radius: 999px; padding: 2px 8px; flex: none;
+  }
+
+  /* Sonuç */
+  .result { text-align: center; padding-top: 4px; }
+  .cupviz svg { width: min(270px, 72vw); height: auto; display: block; margin: 0 auto 6px; }
+  .steam path { animation: steam 3.2s ease-in-out infinite; }
+  .steam path:nth-child(2) { animation-delay: 0.6s; }
+  .steam path:nth-child(3) { animation-delay: 1.2s; }
+  @keyframes steam { 0%, 100% { opacity: 0.25; transform: translateY(0); } 50% { opacity: 0.6; transform: translateY(-4px); } }
+  .coffee-name { font-size: clamp(1.35rem, 5.6vw, 1.8rem); margin: 0.25em auto 0.5em; max-width: 24ch; }
+  .verdict { display: flex; flex-direction: column; align-items: center; gap: 4px; margin: 10px 0 6px; font-size: 1.08rem; }
+  .verdict strong { font-family: var(--serif); font-size: clamp(3.3rem, 17vw, 4.6rem); line-height: 1; color: var(--rust); }
+  .verdict .num { font-variant-numeric: tabular-nums; }
+  .quip { font-style: italic; color: var(--ink-soft); margin: 4px 0 0; }
+  .stat {
+    background: var(--paper); border: 1px solid var(--line); border-radius: 14px;
+    padding: 14px 16px; font-size: 0.95rem; text-align: left; margin: 22px 0;
+  }
+  .stat b { color: var(--green-deep); font-variant-numeric: tabular-nums; }
+  .recap-title { font-size: 1.2rem; text-align: left; margin: 0 0 8px; }
+  .recap { list-style: none; padding: 0; margin: 0 0 26px; text-align: left; counter-reset: r; border-top: 1px solid var(--line); }
+  .recap li {
+    counter-increment: r; display: grid; grid-template-columns: 2em 1fr auto; gap: 8px;
+    padding: 9px 2px; border-bottom: 1px dashed var(--line); font-size: 0.95rem;
+  }
+  .recap li::before { content: counter(r); color: var(--rust); font-weight: 700; font-variant-numeric: tabular-nums; }
+  .recap .k { color: var(--ink-soft); }
+  .recap .v { font-weight: 600; text-align: right; }
+  .actions { display: grid; gap: 10px; }
+  .linkish {
+    background: none; border: 0; font: inherit; font-size: 0.92rem; color: var(--ink-soft);
+    text-decoration: underline; text-underline-offset: 3px; cursor: pointer; padding: 10px; margin-top: 6px;
+  }
+
+  /* Tahmin ekranı */
+  .guess { display: flex; align-items: center; justify-content: center; gap: 22px; margin: 8px 0 6px; }
+  .guess-num {
+    font-family: var(--serif); font-weight: 700; font-size: clamp(4.2rem, 22vw, 5.5rem); line-height: 1;
+    color: var(--green-deep); min-width: 2ch; text-align: center; font-variant-numeric: tabular-nums;
+  }
+  .step {
+    width: 56px; height: 56px; border-radius: 50%; flex: none;
+    border: 1.5px solid var(--line); background: var(--paper); color: var(--ink);
+    font: inherit; font-size: 1.7rem; line-height: 1; cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .step:hover { border-color: var(--roast-3); }
+  .step:active { transform: scale(0.95); }
+  .step:focus-visible, .guess-range:focus-visible { outline: 3px solid var(--rust); outline-offset: 3px; }
+  .guess-num.empty { color: #C9B9A6; }
+  .guess-range {
+    -webkit-appearance: none; appearance: none; background: transparent;
+    width: 100%; height: 44px; margin: 4px 0 0; cursor: pointer; --thumb: var(--green-deep);
+  }
+  .guess-range.unset { --thumb: #B7A99A; }
+  .guess-range::-webkit-slider-runnable-track { height: 6px; border-radius: 999px; background: var(--line); }
+  .guess-range::-moz-range-track { height: 6px; border-radius: 999px; background: var(--line); }
+  .guess-range::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 28px; height: 28px; margin-top: -11px; border-radius: 50%;
+    background: var(--thumb); border: 3px solid var(--paper); box-shadow: 0 1px 3px rgba(43, 27, 18, 0.3);
+  }
+  .guess-range::-moz-range-thumb {
+    width: 22px; height: 22px; border-radius: 50%;
+    background: var(--thumb); border: 3px solid var(--paper); box-shadow: 0 1px 3px rgba(43, 27, 18, 0.3);
+  }
+  .range-labels { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--ink-soft); margin: -4px 2px 26px; }
+  .guess-actions { display: grid; gap: 4px; justify-items: center; }
+  .guess-actions .cta { width: 100%; }
+
+  /* Tahmin ↔ gerçek karşılaştırması */
+  .compare {
+    background: var(--paper); border: 1px solid var(--line); border-radius: 14px;
+    padding: 16px; margin: 20px 0 0; text-align: left;
+  }
+  .cmp-row { display: grid; grid-template-columns: 4.6em 1fr 2em; align-items: center; gap: 10px; margin-bottom: 8px; font-size: 0.92rem; }
+  .cmp-row .lab { color: var(--ink-soft); }
+  .cmp-row b { text-align: right; font-variant-numeric: tabular-nums; }
+  .cmp-bar { height: 12px; border-radius: 999px; background: var(--bg); overflow: hidden; }
+  .cmp-bar i { display: block; height: 100%; border-radius: 999px; }
+  .cmp-bar i.g { background: var(--green-deep); }
+  .cmp-bar i.r { background: var(--rust); }
+  .cmp-text { margin: 10px 0 0; font-size: 0.95rem; }
+
+  @media (min-width: 600px) {
+    .screen { padding-top: 28px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .screen, .progress-cover, .opt { transition: none; }
+    .counter.bump, .steam path { animation: none; }
+  }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-inner">
+    <a class="brand" href="./">kahvelerce<span>.com</span></a>
+    <span class="counter" id="counter" aria-live="polite" aria-atomic="true" hidden>Karar: 0</span>
+  </div>
+  <div class="progress-wrap" id="progressWrap" hidden>
+    <div class="progress" role="progressbar" aria-label="İlerleme" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress">
+      <div class="progress-cover" id="progressCover"></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="screen" id="screen"></div>
+  <noscript><p>Bu uygulama JavaScript ile çalışıyor. Tarayıcında JavaScript'i açıp sayfayı yenile.</p></noscript>
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ---------- Karar listesi ----------
+     options: dizi ya da (cevaplar) => dizi
+     when:    (cevaplar) => boolean  (koşul)
+     2'den az seçenek kalan soru sorulmaz ve karar sayılmaz. */
+  var CUPS = { fincan: 'Fincan', kupa: 'Kupa', cam: 'Cam bardak', karton: 'Karton bardak', termos: 'Kendi termosum' };
+  var METHODS = [
+    { v: 'espresso', t: 'Espresso', d: 'Basınçlı ve hızlı' },
+    { v: 'filtre', t: 'Filtre (V60)', d: 'Kâğıt filtreden süzülür' },
+    { v: 'french', t: 'French press', d: 'Demlenir, süzgeçle bastırılır' },
+    { v: 'turk', t: 'Türk kahvesi', d: 'Cezvede, telvesiyle' },
+    { v: 'moka', t: 'Moka pot', d: 'Ocakta, buhar basıncıyla' },
+    { v: 'coldbrew', t: 'Cold brew', d: 'Soğuk suda saatlerce demlenir' }
+  ];
+
+  var QUESTIONS = [
+    { id: 'place', label: 'Mekân', title: 'Kahveni nerede içeceksin?',
+      hint: 'Ortada daha kahve yok ama ilk kararını verdin bile.',
+      options: [{ v: 'ev', t: 'Evde' }, { v: 'kafe', t: 'Kafede' }, { v: 'yol', t: 'Yolda' }] },
+
+    { id: 'cafeType', label: 'Kafe', title: 'Nasıl bir kafe?',
+      when: function (s) { return s.place === 'kafe'; },
+      hint: 'Kahve dünyasında "dalgalar" var: ilki hazır kahve, ikincisi zincir kafeler, üçüncüsü çekirdeğin hikâyesini anlatan nitelikli kahveciler.',
+      options: [
+        { v: 'mahalle', t: 'Mahalle kahvecisi', d: 'Siparişini sen söylemeden hazırlamaya başlarlar' },
+        { v: 'zincir', t: 'Zincir kafe', d: 'Her şehirde aynı menü. Sürpriz yok, bu da bir rahatlık.' },
+        { v: 'nitelikli', t: 'Nitelikli kahveci', d: 'Çekirdeğin hangi tepede yetiştiğini anlatırlar. Sormasan da.' },
+        { v: 'kitap', t: 'Kitap kafe', d: 'Üç sayfa okursun, iki kahve içersin' }
+      ] },
+
+    { id: 'seat', label: 'Masa', title: 'Hangi masaya oturuyorsun?',
+      when: function (s) { return s.place === 'kafe'; },
+      hint: 'Kafede ilk karar menüde değil, kapıda verilir: nereye oturacağın.',
+      options: [
+        { v: 'cam', t: 'Cam kenarı', d: 'Kahve artı manzara, aynı fiyata' },
+        { v: 'priz', t: 'Prizin yanı', d: 'Şarj %9. Öncelikler belli.' },
+        { v: 'kose', t: 'Köşe masa', d: 'Herkesi görürsün, kimse seni rahatsız etmez' },
+        { v: 'disari', t: 'Dışarısı', d: 'Hava nasıl olursa olsun. Battaniye varsa tamam.' }
+      ] },
+
+    { id: 'temp', label: 'Sıcaklık', title: 'Sıcak mı, soğuk mu?',
+      hint: 'Ocakta buzlu latte içenleri yargılamıyoruz. Hangi ocak olduğunu da sormuyoruz.',
+      options: [{ v: 'sicak', t: 'Sıcak' }, { v: 'soguk', t: 'Soğuk' }] },
+
+    { id: 'method', label: 'Demleme', title: 'Nasıl demlensin?',
+      hint: 'Aynı çekirdek, farklı bir yöntemle bambaşka bir fincana dönüşür.',
+      options: function (s) {
+        return s.temp === 'soguk'
+          ? METHODS.filter(function (o) { return ['espresso', 'filtre', 'coldbrew'].indexOf(o.v) > -1; })
+          : METHODS.filter(function (o) { return o.v !== 'coldbrew'; });
+      } },
+
+    { id: 'turkBrew', label: 'Pişirme', title: 'Cezve nerede pişsin?',
+      when: function (s) { return s.method === 'turk'; },
+      hint: 'Usta tavsiyesi: Türk kahvesi kısık ateşte, acele etmeden pişer. Acele eden cezve taşar.',
+      options: [{ v: 'ocak', t: 'Ocakta', d: 'Klasik cezve' }, { v: 'kum', t: 'Kumda', d: 'Kızgın kumda, yavaş yavaş' }, { v: 'makine', t: 'Makinede', d: 'Düğmeye bas, bekle' }] },
+
+    { id: 'decaf', label: 'Kafein', title: 'Kafeinli mi, kafeinsiz mi?',
+      hint: 'Küçük bir not: kafeinsiz kahvede de bir miktar kafein kalır, sıfır değildir.',
+      options: [{ v: 'kafeinli', t: 'Kafeinli' }, { v: 'kafeinsiz', t: 'Kafeinsiz' }] },
+
+    { id: 'bean', label: 'Çekirdek', title: 'Hangi çekirdek?',
+      hint: 'Robusta, Arabica\'ya göre kabaca iki kat kafein içerir; tadı da daha sert ve acıdır.',
+      options: [{ v: 'arabica', t: 'Arabica', d: 'Daha yumuşak ve aromatik' }, { v: 'robusta', t: 'Robusta', d: 'Daha sert, daha kafeinli' }, { v: 'harman', t: 'Harman', d: 'İkisinin karışımı' }] },
+
+    { id: 'origin', label: 'Menşei', title: 'Çekirdek nereden gelsin?',
+      when: function (s) { return s.bean === 'arabica'; },
+      hint: 'Kahve, ekvator çevresindeki "kahve kuşağı"nda yetişir. Arabica\'nın anavatanı Etiyopya kabul edilir.',
+      options: [{ v: 'etiyopya', t: 'Etiyopya' }, { v: 'kolombiya', t: 'Kolombiya' }, { v: 'brezilya', t: 'Brezilya' }, { v: 'kenya', t: 'Kenya' }, { v: 'guatemala', t: 'Guatemala' }] },
+
+    { id: 'process', label: 'İşleme', title: 'Meyvesinden nasıl ayrılsın?',
+      when: function (s) { return s.bean === 'arabica'; },
+      hint: 'Evet, meyve. Kahve çekirdeği aslında "kahve kirazı" denen kırmızı bir meyvenin çekirdeği.',
+      options: [{ v: 'yikanmis', t: 'Yıkanmış', d: 'Meyve eti yıkanıp ayrılır; temiz, parlak tat' }, { v: 'natural', t: 'Natural', d: 'Meyveyle birlikte kurutulur; daha meyvemsi' }, { v: 'honey', t: 'Honey', d: 'Meyve etinin bir kısmı kalır; ikisinin arası' }] },
+
+    { id: 'roast', label: 'Kavurma', title: 'Ne kadar kavrulsun?',
+      hint: 'Çiğ kahve çekirdeği yeşildir. O bildiğimiz kahverengi tamamen kavurmanın eseri.',
+      options: [{ v: 'acik', t: 'Açık', d: 'Daha asidik, meyvemsi', sw: '#BE8B4F' }, { v: 'orta', t: 'Orta', d: 'Dengeli', sw: '#8E5D37' }, { v: 'koyu', t: 'Koyu', d: 'Daha acı, gövdeli', sw: '#3A2418' }] },
+
+    { id: 'grind', label: 'Öğütme', title: 'Kahveyi kim öğütecek?',
+      when: function (s) { return s.place === 'ev'; },
+      hint: 'Öğütülen kahve aromasını hızla kaybetmeye başlar. Öte yandan sabah yedide değirmen sesi de bir bedel.',
+      options: [{ v: 'taze', t: 'Ben, demlemeden hemen önce' }, { v: 'hazir', t: 'Hazır öğütülmüşü kullanırım' }] },
+
+    { id: 'dose', label: 'Doz', title: 'Tek shot mı, çift mi?',
+      when: function (s) { return s.method === 'espresso'; },
+      hint: 'Çift espressonun İtalyancası "doppio", yani "çift". Bir bilgi kartı kazandın.',
+      options: [{ v: 'tek', t: 'Tek' }, { v: 'cift', t: 'Çift (doppio)' }] },
+
+    { id: 'milk', label: 'Süt', title: 'Süt olsun mu?',
+      when: function (s) { return s.method !== 'turk'; },
+      hint: 'Latte de cappuccino da temelde espresso ve sütün farklı oranları.',
+      options: [{ v: 'yok', t: 'Olmasın' }, { v: 'var', t: 'Olsun' }] },
+
+    { id: 'milkType', label: 'Süt türü', title: 'Hangi süt?',
+      when: function (s) { return s.milk === 'var'; },
+      hint: 'Bitkisel "sütler" teknik olarak süt değil, içecek. Yine de kimse kafede "yulaf içecekli latte" demiyor.',
+      options: [{ v: 'inek', t: 'İnek sütü' }, { v: 'yulaf', t: 'Yulaf' }, { v: 'badem', t: 'Badem' }, { v: 'soya', t: 'Soya' }, { v: 'laktozsuz', t: 'Laktozsuz' }] },
+
+    { id: 'foam', label: 'Köpük', title: 'Köpük ne kadar olsun?',
+      when: function (s) { return (s.milk === 'var' && s.temp === 'sicak') || s.method === 'turk'; },
+      hint: function (s) {
+        return s.method === 'turk'
+          ? 'Türk kahvesinde köpük bir ustalık göstergesi sayılır. Köpüksüz fincan, ev sahibini biraz mahcup eder.'
+          : 'Latte ile cappuccino arasındaki farkın büyük kısmı köpükte saklı.';
+      },
+      options: function (s) {
+        return s.method === 'turk'
+          ? [{ v: 'bol', t: 'Bol köpüklü' }, { v: 'az', t: 'Az köpüklü' }, { v: 'farketmez', t: 'Fark etmez' }]
+          : [{ v: 'yok', t: 'Yok' }, { v: 'az', t: 'Az' }, { v: 'bol', t: 'Bol' }];
+      } },
+
+    { id: 'syrup', label: 'Aroma', title: 'Aroma ya da şurup?',
+      when: function (s) { return s.method !== 'turk'; },
+      hint: 'Şurup eklemek bir karar. Eklememek de bir karar. Bu uygulamadan kaçış yok.',
+      options: [{ v: 'yok', t: 'Yok, sade' }, { v: 'vanilya', t: 'Vanilya' }, { v: 'karamel', t: 'Karamel' }, { v: 'findik', t: 'Fındık' }] },
+
+    { id: 'sugar', label: 'Şeker',
+      title: function (s) { return s.method === 'turk' ? 'Şekeri nasıl olsun?' : 'Şeker ister misin?'; },
+      hint: function (s) {
+        return s.method === 'turk'
+          ? 'Türk kahvesinde şeker sonradan eklenmez, pişerken girer. Yani bu karar geri alınamaz. (Burada alınır, geri butonu var.)'
+          : 'Şekersiz seçmek de sayılır. Sayaç her şeyi görüyor.';
+      },
+      options: function (s) {
+        return s.method === 'turk'
+          ? [{ v: 'sade', t: 'Sade' }, { v: 'az', t: 'Az şekerli' }, { v: 'orta', t: 'Orta' }, { v: 'sekerli', t: 'Şekerli' }]
+          : [{ v: 'yok', t: 'Şekersiz' }, { v: 'az', t: 'Az' }, { v: 'orta', t: 'Orta' }, { v: 'bol', t: 'Bol' }];
+      } },
+
+    { id: 'size', label: 'Boy', title: 'Hangi boy?',
+      when: function (s) { return (s.method !== 'espresso' && s.method !== 'turk') || (s.method === 'espresso' && s.milk === 'var'); },
+      hint: 'Bazı yerlerde boy isimleri İtalyanca. Burada üç düz Türkçe kelime var, rahat ol.',
+      options: [{ v: 'kucuk', t: 'Küçük' }, { v: 'orta', t: 'Orta' }, { v: 'buyuk', t: 'Büyük' }] },
+
+    { id: 'cup', label: 'Bardak', title: 'Neyle içeceksin?',
+      hint: 'Kendi termosunu getirirsen dünyada bir karton bardak daha az olur.',
+      options: function (s) {
+        var v = s.place === 'ev' ? ['fincan', 'kupa', 'cam', 'termos']
+              : s.place === 'kafe' ? ['fincan', 'cam', 'karton', 'termos']
+              : ['karton', 'termos'];
+        if (s.temp === 'soguk') v = v.filter(function (x) { return x !== 'fincan' && x !== 'kupa'; });
+        if (s.method === 'turk') v = s.place === 'yol' ? ['karton', 'termos'] : ['fincan']; // fincanda tartışma yok
+        return v.map(function (x) { return { v: x, t: CUPS[x] }; });
+      } },
+
+    { id: 'side', label: 'Yanında', title: 'Yanına ne alırsın?',
+      hint: 'Türk kahvesinin yanındaki suyun ağzı tada hazırlamak için olduğu söylenir. Lokum ise tatlı bir bonus.',
+      options: [{ v: 'su', t: 'Su' }, { v: 'lokum', t: 'Lokum' }, { v: 'tatli', t: 'Tatlı bir şey' }, { v: 'yok', t: 'Hiçbir şey' }] }
+  ];
+
+  // Sonraki soruları etkileyen cevaplar (koşullarda kullanılanlar)
+  var COND_KEYS = ['place', 'temp', 'method', 'bean', 'milk'];
+
+  function val(x, s) { return typeof x === 'function' ? x(s) : x; }
+  function optionsFor(q, s) { return val(q.options, s); }
+  function isAsked(q, s) {
+    if (q.when && !q.when(s)) return false;
+    return optionsFor(q, s).length >= 2;
+  }
+  function condState(a) {
+    var s = {};
+    COND_KEYS.forEach(function (k) { if (a[k] !== undefined) s[k] = a[k]; });
+    return s;
+  }
+
+  /* Tüm karar ağacı: kombinasyon sayısı, en kısa ve en uzun rota */
+  var memo = {};
+  function stats(i, s) {
+    if (i >= QUESTIONS.length) return { n: 1, min: 0, max: 0 };
+    var key = i + '|' + COND_KEYS.map(function (k) { return s[k] || ''; }).join(',');
+    if (memo[key]) return memo[key];
+    var q = QUESTIONS[i], r;
+    if (!isAsked(q, s)) {
+      r = stats(i + 1, s);
+    } else {
+      var opts = optionsFor(q, s);
+      if (COND_KEYS.indexOf(q.id) > -1) {
+        var n = 0, min = Infinity, max = 0;
+        opts.forEach(function (o) {
+          var next = Object.assign({}, s); next[q.id] = o.v;
+          var sub = stats(i + 1, next);
+          n += sub.n; min = Math.min(min, sub.min); max = Math.max(max, sub.max);
+        });
+        r = { n: n, min: min + 1, max: max + 1 };
+      } else {
+        var sub2 = stats(i + 1, s);
+        r = { n: sub2.n * opts.length, min: sub2.min + 1, max: sub2.max + 1 };
+      }
+    }
+    memo[key] = r;
+    return r;
+  }
+
+  /* ---------- Kahvenin adı ---------- */
+  var MILK_ADJ = { inek: 'sütlü', yulaf: 'yulaf sütlü', badem: 'badem sütlü', soya: 'soya sütlü', laktozsuz: 'laktozsuz sütlü' };
+  var SYRUP_ADJ = { vanilya: 'vanilyalı', karamel: 'karamelli', findik: 'fındıklı' };
+  var ROAST_ADJ = { acik: 'açık kavrulmuş', orta: 'orta kavrulmuş', koyu: 'koyu kavrulmuş' };
+  var ORIGIN = { etiyopya: 'Etiyopya', kolombiya: 'Kolombiya', brezilya: 'Brezilya', kenya: 'Kenya', guatemala: 'Guatemala' };
+  var TURK_SUGAR = { sade: 'sade', az: 'az şekerli', orta: 'orta şekerli', sekerli: 'şekerli' };
+
+  function coffeeName(a) {
+    var cold = a.temp === 'soguk', milk = a.milk === 'var', base = '', milkInBase = false;
+    switch (a.method) {
+      case 'espresso':
+        if (milk && (cold || a.foam === 'az' || a.foam === 'bol')) {
+          milkInBase = true;
+          base = cold ? 'buzlu latte' : (a.foam === 'bol' ? 'cappuccino' : 'latte');
+        } else {
+          base = (cold ? 'buzlu ' : '') + (a.dose === 'cift' ? 'doppio' : 'espresso');
+        }
+        break;
+      case 'filtre': base = cold ? 'buzlu filtre kahve' : 'filtre kahve'; break;
+      case 'french': base = 'French press kahve'; break;
+      case 'moka': base = 'moka pot kahvesi'; break;
+      case 'turk': base = a.turkBrew === 'kum' ? 'kumda Türk kahvesi' : 'Türk kahvesi'; break;
+      case 'coldbrew': base = 'cold brew'; break;
+    }
+    var adj = [];
+    if (a.method === 'turk') {
+      if (TURK_SUGAR[a.sugar]) adj.push(TURK_SUGAR[a.sugar]);
+      if (a.foam === 'bol') adj.push('bol köpüklü');
+      if (a.foam === 'az') adj.push('az köpüklü');
+    }
+    if (a.decaf === 'kafeinsiz') adj.push('kafeinsiz');
+    if (SYRUP_ADJ[a.syrup]) adj.push(SYRUP_ADJ[a.syrup]);
+    if (milk && a.milkType && !(milkInBase && a.milkType === 'inek')) adj.push(MILK_ADJ[a.milkType]);
+
+    var bean = a.bean === 'arabica' ? ORIGIN[a.origin] : a.bean === 'robusta' ? 'Robusta' : 'harman';
+    var core = [ROAST_ADJ[a.roast], bean, base].filter(Boolean).join(' ');
+    var name = adj.concat(core).join(', ');
+    return name.charAt(0).toLocaleUpperCase('tr-TR') + name.slice(1);
+  }
+
+  /* ---------- El çizimi illüstrasyonlar ----------
+     Her parça kendi koordinatında çizilir: (0,0) nesnenin zemine değdiği orta nokta.
+     El çizimi hissi iki şeyden gelir: hafif titreşim filtresi (feTurbulence)
+     ve dolgunun çizgiden biraz kayması (baskı/risograf etkisi). */
+  var IN = '#2B1B12', PA = '#FFFDF9', RU = '#A6432A', GL = '#E6EEEA', uid = 0;
+
+  function sh(d, fill, w) { // kaymış dolgu + çizgi
+    return (fill ? '<path d="' + d + '" fill="' + fill + '" transform="translate(2.2 1.8)"/>' : '') +
+      '<path d="' + d + '" fill="none" stroke="' + IN + '" stroke-width="' + (w || 2.6) + '" stroke-linejoin="round" stroke-linecap="round"/>';
+  }
+  function ln(d, color, w, op) {
+    return '<path d="' + d + '" fill="none" stroke="' + (color || IN) + '" stroke-width="' + (w || 2.6) +
+      '" stroke-linejoin="round" stroke-linecap="round"' + (op ? ' opacity="' + op + '"' : '') + '/>';
+  }
+  function fl(d, fill, op) { return '<path d="' + d + '" fill="' + fill + '"' + (op ? ' opacity="' + op + '"' : '') + '/>'; }
+  function rim(d, fill) { return fl(d, fill) + ln(d, IN, 2.4); }
+  function ell(rx, ry, cy) { // yatay elips: fincan ağzı, sıvı yüzeyi
+    var k = ry * 1.35;
+    return 'M' + (-rx) + ' ' + cy + ' C' + (-rx * 0.7) + ' ' + (cy - k) + ' ' + (rx * 0.7) + ' ' + (cy - k) + ' ' + rx + ' ' + cy +
+      ' C' + (rx * 0.7) + ' ' + (cy + k) + ' ' + (-rx * 0.7) + ' ' + (cy + k) + ' ' + (-rx) + ' ' + cy + 'Z';
+  }
+  function clip(id, d) { return '<defs><clipPath id="' + id + '"><path d="' + d + '"/></clipPath></defs>'; }
+  function bean(x, y, rot, fill, crease, s) {
+    return '<g transform="translate(' + x + ' ' + y + ') rotate(' + rot + ') scale(' + (s || 1) + ')">' +
+      sh('M0 -12 C8 -12 9 12 0 12 C-9 12 -8 -12 0 -12Z', fill, 2.2) +
+      ln('M0 -9 C-4 -3 4 3 0 9', crease, 2) + '</g>';
+  }
+  function cube(x, y, rot) {
+    return '<g transform="translate(' + x + ' ' + y + ') rotate(' + rot + ')">' +
+      '<path d="M-8 -10 L8 -10 Q10 -10 10 -8 L10 8 Q10 10 8 10 L-8 10 Q-10 10 -10 8 L-10 -8 Q-10 -10 -8 -10Z" fill="#fff" fill-opacity=".55" stroke="' + IN + '" stroke-width="1.5" stroke-opacity=".5"/></g>';
+  }
+  function steam(top) {
+    var p = function (x, h) { return 'M' + x + ' ' + top + ' c-6 -' + h + ' 6 -' + (h + 5) + ' 0 -' + (2 * h) + ' c-6 -' + h + ' 5 -' + (h + 4) + ' 1 -' + (2 * h); };
+    return '<g class="steam" fill="none" stroke="#6B5546" stroke-width="2.4" stroke-linecap="round" opacity=".5">' +
+      '<path d="' + p(-12, 8) + '"/><path d="' + p(0, 10) + '"/><path d="' + p(12, 8) + '"/></g>';
+  }
+
+  /* İçeceğin yüzeyi: renk + süsleme */
+  function drinkTop(a) {
+    var milk = a.milk === 'var', hot = a.temp !== 'soguk';
+    if (a.method === 'turk') return { fill: '#8E5D37', art: a.foam === 'bol' ? 'bubblesMany' : 'bubbles' };
+    if (milk && hot) {
+      if (a.foam === 'bol') return { fill: '#F1E2CC', art: 'cocoa' };
+      if (a.foam === 'az') return { fill: '#E6CFAE', art: 'heart' };
+      return { fill: '#C49A6C' };
+    }
+    if (milk) return { fill: '#C49A6C' };
+    if (a.method === 'espresso') return { fill: '#A86F3D', art: 'crema' };
+    if (a.method === 'coldbrew') return { fill: '#4A2C1A', art: 'shine' };
+    return { fill: '#3A2418', art: 'shine' };
+  }
+  function topArt(art, rx, cy) {
+    if (art === 'heart') {
+      return '<g transform="translate(0 ' + cy + ') scale(' + (rx / 44) + ' ' + (rx / 120) + ')">' +
+        '<path d="M0 12 C-14 2 -19 -7 -11 -11 C-6 -13 -1 -10 0 -6 C1 -10 6 -13 11 -11 C19 -7 14 2 0 12Z" fill="#B07A45"/></g>';
+    }
+    if (art === 'cocoa') {
+      return [[-.5, -.1], [-.25, .25], [0, -.2], [.2, .15], [.45, -.05], [-.1, .05], [.3, -.3], [-.35, -.3], [.1, .3]].map(function (p) {
+        return '<circle cx="' + (p[0] * rx) + '" cy="' + (cy + p[1] * rx * 0.12) + '" r="1.5" fill="#7A4E2D" opacity=".6"/>';
+      }).join('');
+    }
+    if (art === 'crema') return fl(ell(rx * 0.45, 2.2, cy - 0.5), '#C99560');
+    if (art === 'shine') return ln('M' + (-rx * 0.5) + ' ' + (cy - 1) + ' C' + (-rx * 0.2) + ' ' + (cy - 3) + ' ' + (rx * 0.1) + ' ' + (cy - 3) + ' ' + (rx * 0.3) + ' ' + (cy - 2), '#fff', 1.8, 0.35);
+    if (art === 'bubbles' || art === 'bubblesMany') {
+      var pts = [[-.35, 0, 1.8], [.15, -.05, 1.4], [.5, .05, 1.2]];
+      if (art === 'bubblesMany') pts = pts.concat([[-.6, .02, 1.2], [-.1, .08, 1.6], [.3, -.12, 1.1], [-.2, -.12, 1.2], [.65, -.05, 1]]);
+      return pts.map(function (p) {
+        return '<circle cx="' + (p[0] * rx) + '" cy="' + (cy + p[1] * rx * 0.2) + '" r="' + p[2] + '" fill="#C9A16A"/>';
+      }).join('');
+    }
+    return '';
+  }
+
+  /* Kaplar (bardak/fincan seçimine göre) */
+  var CONT = {
+    espresso: function (t) {
+      return sh(ell(52, 6, -2), PA) +
+        ln('M32 -52 C52 -54 54 -26 28 -24') +
+        sh('M-36 -62 C-35 -40 -32 -20 -24 -10 C-18 -6 18 -6 24 -10 C32 -20 35 -40 36 -62', PA) +
+        ln('M-27 -46 C-26 -34 -23 -25 -17 -18', IN, 1.6, 0.3) +
+        rim(ell(36, 6, -62), t.fill) + topArt(t.art, 30, -62);
+    },
+    wide: function (t) {
+      return sh(ell(66, 7, -2), PA) +
+        ln('M52 -62 C80 -64 80 -26 44 -26') +
+        sh('M-58 -74 C-57 -44 -44 -16 -22 -9 C-10 -6 10 -6 22 -9 C44 -16 57 -44 58 -74', PA) +
+        ln('M-46 -56 C-42 -38 -34 -26 -24 -19', IN, 1.6, 0.3) +
+        rim(ell(58, 7, -74), t.fill) + topArt(t.art, 50, -74);
+    },
+    mug: function (t) {
+      return sh('M40 -82 C70 -84 72 -30 40 -30 L40 -42 C58 -42 58 -70 40 -70 Z', PA) +
+        sh('M-42 -96 L-40 -10 C-40 -3 -34 0 -27 0 L27 0 C34 0 40 -3 40 -10 L42 -96', PA) +
+        fl('M-41.4 -64 L41.3 -64 L41.1 -53 L-41.1 -53Z', RU) +
+        '<g transform="translate(-14 -28) rotate(-25)">' + ln('M0 -8 C6 -8 6 8 0 8 C-6 8 -6 -8 0 -8Z', IN, 1.6, 0.6) + ln('M0 -6 C-3 -2 3 2 0 6', IN, 1.4, 0.6) + '</g>' +
+        rim(ell(42, 6, -96), t.fill) + topArt(t.art, 36, -96);
+    },
+    glass: function (t, a) {
+      var cold = a.temp === 'soguk', milk = a.milk === 'var', id = 'gc' + uid;
+      var o = 'M-36 -120 L-29 -6 C-28 -2 -25 0 -21 0 L21 0 C25 0 28 -2 29 -6 L36 -120';
+      var L = cold ? -92 : -100, hw = 29 + 7 * ((-L) - 6) / 114;
+      var base = milk ? (cold ? '#E3CBA8' : '#C49A6C') : (a.method === 'coldbrew' ? '#4A2C1A' : '#3A2418');
+      var layers = '<rect x="-40" y="' + L + '" width="80" height="' + (2 - L) + '" fill="' + base + '"/>';
+      if (milk && cold) layers += '<path d="M-40 ' + L + ' L40 ' + L + ' L40 ' + (L + 22) + ' C24 ' + (L + 30) + ' 10 ' + (L + 16) + ' -4 ' + (L + 26) + ' C-18 ' + (L + 34) + ' -30 ' + (L + 20) + ' -40 ' + (L + 28) + 'Z" fill="#7A4E2D"/>';
+      if (milk && !cold) layers += '<rect x="-40" y="' + L + '" width="80" height="16" fill="#F1E2CC"/>';
+      var surf = milk && !cold ? '#F6EBDB' : milk ? '#8E5D37' : '#5C3A22';
+      var ice = cold ? cube(-14, L + 2, -12) + cube(11, L - 3, 14) + cube(-3, L + 22, 6) : '';
+      return clip(id, o + 'Z') +
+        fl(o + 'Z', GL, 0.55) +
+        (cold ? ln('M4 -30 L22 -150', RU, 7) : '') +
+        '<g clip-path="url(#' + id + ')">' + layers + fl(ell(hw, 4, L), surf) + ice + '</g>' +
+        ln('M-26 -108 L-21 -20', '#fff', 3, 0.7) +
+        ln(o) + ln(ell(36, 5, -120), IN, 2.2);
+    },
+    paper: function (t, a) {
+      var cold = a.temp === 'soguk';
+      return (cold ? ln('M8 -116 L20 -152', RU, 6) : '') +
+        sh('M-36 -104 L-28 -3 C-28 -1 -26 0 -24 0 L24 0 C26 0 28 -1 28 -3 L36 -104', PA) +
+        fl('M-33.5 -72 L33.5 -72 L31.1 -40 L-31.1 -40Z', RU) + ln('M-33.5 -72 L33.5 -72 M-31.1 -40 L31.1 -40', IN, 1.8) +
+        '<g transform="translate(0 -56) rotate(-25)">' + ln('M0 -8 C6 -8 6 8 0 8 C-6 8 -6 -8 0 -8Z', PA, 1.8) + ln('M0 -6 C-3 -2 3 2 0 6', PA, 1.6) + '</g>' +
+        sh('M-41 -112 L41 -112 L38 -103 L-38 -103 Z', '#3B2A20') +
+        sh('M-33 -112 C-30 -123 30 -123 33 -112', '#3B2A20') +
+        (cold ? '' : ln('M10 -117 L20 -117', PA, 2.2));
+    },
+    flask: function () {
+      return sh('M-26 -100 L-26 -12 C-26 -4 -20 0 -12 0 L12 0 C20 0 26 -4 26 -12 L26 -100 Z', '#6E7B45') +
+        fl('M-25 -66 L25 -66 L25 -56 L-25 -56Z', RU) +
+        ln('M-15 -90 L-15 -18', '#fff', 4, 0.25) +
+        sh('M-22 -100 L-22 -116 C-22 -123 22 -123 22 -116 L22 -100 Z', IN) +
+        '<circle cx="5" cy="-32" r="11" fill="' + PA + '"/>' + bean(5, -32, -25, '#8E5D37', PA, 0.55);
+    },
+    turk: function (t) {
+      var dots = [-20, -10, 0, 10, 20].map(function (x) {
+        return '<circle cx="' + x + '" cy="' + (-41 + Math.abs(x) * -0.08) + '" r="1.8" fill="' + RU + '"/>';
+      }).join('');
+      return sh(ell(50, 6, -2), PA) +
+        ln('M30 -46 C46 -48 48 -26 26 -24') +
+        sh('M-32 -62 C-32 -36 -26 -16 -12 -9 C-6 -6 6 -6 12 -9 C26 -16 32 -36 32 -62', PA) +
+        ln('M-31.5 -50 C-12 -46 12 -46 31.5 -50', RU, 3.5) + dots +
+        rim(ell(32, 5, -62), t.fill) + topArt(t.art, 26, -62);
+    }
+  };
+  var TOPS = { espresso: -70, wide: -84, mug: -104, glass: -126, paper: -124, flask: 0, turk: -70 };
+
+  function containerKind(a) {
+    if (a.cup === 'karton') return 'paper';
+    if (a.cup === 'termos') return 'flask';
+    if (a.cup === 'kupa') return 'mug';
+    if (a.cup === 'cam') return 'glass';
+    if (a.method === 'turk') return 'turk';
+    if (a.method === 'espresso' && a.milk !== 'var') return 'espresso';
+    return 'wide';
+  }
+
+  /* Demleme aletleri (yöntemi gösterir) */
+  var DEVICES = {
+    filtre: function () {
+      var id = 'sv' + uid, o = 'M-26 -58 C-34 -40 -32 -10 -22 0 L22 0 C32 -10 34 -40 26 -58';
+      return clip(id, o + 'Z') + fl(o + 'Z', GL, 0.6) +
+        '<g clip-path="url(#' + id + ')"><rect x="-40" y="-24" width="80" height="26" fill="#3A2418"/></g>' +
+        ln('M28 -48 C44 -46 44 -18 28 -14') + ln(o) + ln(ell(26, 3, -58), IN, 2) +
+        fl('M0 -52 C-2 -48 -2 -46 0 -45 C2 -46 2 -48 0 -52Z', '#3A2418') +
+        sh('M-24 -62 L24 -62 L22 -57 L-22 -57Z', RU) +
+        sh('M-34 -98 L34 -98 L12 -64 L-12 -64Z', RU) +
+        ln('M-18 -92 L-5 -70 M0 -94 L0 -70 M18 -92 L5 -70', IN, 1.3, 0.3) +
+        sh('M-34 -98 L-38 -106 C-20 -110 20 -110 38 -106 L34 -98Z', PA);
+    },
+    french: function () {
+      var id = 'fp' + uid, o = 'M-28 -104 L-28 -8 L28 -8 L28 -104';
+      return clip(id, o + 'Z') +
+        sh('M28 -96 C54 -96 54 -24 28 -24 L28 -34 C44 -34 44 -86 28 -86Z', IN) +
+        fl(o + 'Z', GL, 0.6) +
+        '<g clip-path="url(#' + id + ')"><rect x="-30" y="-72" width="60" height="66" fill="#3A2418"/><rect x="-30" y="-72" width="60" height="5" fill="#8E5D37"/></g>' +
+        ln('M-27 -72 L27 -72', IN, 2) + ln('M0 -72 L0 -136', IN, 2.6) +
+        sh('M-6 -140 C-6 -148 6 -148 6 -140 C6 -133 -6 -133 -6 -140Z', IN) +
+        ln('M-20 -98 L-20 -20', '#fff', 3, 0.6) + ln(o) +
+        sh('M-32 -104 L32 -104 L30 -112 L-30 -112Z', IN) +
+        sh('M-31 -8 L31 -8 L29 0 L-29 0Z', IN);
+    },
+    moka: function () {
+      var al = '#D8CFC2';
+      return sh('M28 -92 L50 -88 L46 -60 L30 -62Z', IN) +
+        sh('M-28 0 L-32 -40 L-14 -48 L14 -48 L32 -40 L28 0 Z', al) +
+        ln('M-9 -47 L-11 -1 M9 -47 L11 -1', IN, 1.5, 0.45) +
+        sh('M-16 -48 L16 -48 L16 -53 L-16 -53 Z', IN) +
+        sh('M-14 -53 L-30 -60 L-24 -100 L24 -100 L30 -60 L14 -53 Z', al) +
+        ln('M-8 -55 L-9 -98 M8 -55 L9 -98', IN, 1.5, 0.45) +
+        sh('M-24 -96 L-38 -103 L-27 -88', al, 2.2) +
+        sh('M-6 -100 L6 -100 L4 -109 L-4 -109 Z', IN);
+    },
+    turk: function () {
+      return ln('M-22 -50 L-74 -84', '#3B2A20', 7) + ln('M-60 -75 L-74 -84', '#8E5D37', 7) +
+        sh('M-24 -58 C-30 -40 -28 -10 -18 0 L18 0 C28 -10 30 -40 24 -58', RU) +
+        '<circle cx="-10" cy="-30" r="2" fill="#C2654A"/><circle cx="8" cy="-40" r="1.6" fill="#C2654A"/><circle cx="12" cy="-18" r="1.8" fill="#C2654A"/>' +
+        sh('M-28 -60 C-14 -66 14 -66 28 -60 L38 -66 L32 -57 C14 -53 -14 -53 -28 -60Z', '#8E3A25');
+    },
+    coldbrew: function () {
+      var id = 'cb' + uid;
+      var o = 'M-20 -126 L-20 -112 C-20 -104 -30 -100 -30 -88 L-30 -8 C-30 -3 -26 0 -21 0 L21 0 C26 0 30 -3 30 -8 L30 -88 C30 -100 20 -104 20 -112 L20 -126 Z';
+      return clip(id, o) + fl(o, GL, 0.6) +
+        '<g clip-path="url(#' + id + ')"><rect x="-32" y="-96" width="64" height="98" fill="#4A2C1A"/></g>' +
+        fl('M-30 -64 L30 -64 L30 -30 L-30 -30Z', PA) + ln('M-30 -64 L30 -64 L30 -30 L-30 -30Z', IN, 1.8) +
+        ln('M-16 -52 L16 -52 M-10 -42 L10 -42', RU, 2.4) +
+        ln('M-22 -84 L-22 -70 M-22 -24 L-22 -12', '#fff', 3, 0.5) + ln(o) +
+        sh('M-22 -126 L22 -126 L22 -138 L-22 -138Z', IN);
+    },
+    espresso: function () { // alet yerine kavrulma tayfında üç çekirdek
+      return bean(-34, -10, 80, '#A3AE71', '#6E7B45', 1.15) +
+        bean(-4, -9, 104, '#BE8B4F', '#8E5D37', 1.15) +
+        bean(26, -10, 70, '#3A2418', '#8E5D37', 1.15);
+    }
+  };
+
+  /* Yanında */
+  var SIDES = {
+    su: function () {
+      var id = 'su' + uid, o = 'M-16 -52 L-13 -3 C-13 -1 -11 0 -9 0 L9 0 C11 0 13 -1 13 -3 L16 -52';
+      return clip(id, o + 'Z') + fl(o + 'Z', GL, 0.6) +
+        '<g clip-path="url(#' + id + ')"><rect x="-20" y="-34" width="40" height="36" fill="#CFE3DE"/></g>' +
+        ln('M-9 -44 L-7 -10', '#fff', 2.4, 0.7) + ln(o) + ln(ell(16, 2.5, -52), IN, 2);
+    },
+    lokum: function () {
+      var cubeL = function (x, y, r) {
+        return '<g transform="translate(' + x + ' ' + y + ') rotate(' + r + ')">' + sh('M-9 -9 L9 -9 L9 9 L-9 9Z', '#F4DED4', 2.2) +
+          '<circle cx="-3" cy="-4" r="1" fill="#fff"/><circle cx="4" cy="2" r="1" fill="#fff"/><circle cx="-2" cy="5" r="0.9" fill="#fff"/></g>';
+      };
+      return sh(ell(28, 4, -3), PA) + cubeL(-10, -16, -8) + cubeL(10, -18, 12);
+    },
+    tatli: function () {
+      return sh('M-18 -20 C-18 -31 -10 -38 0 -38 C11 -38 18 -30 18 -20 C18 -9 10 -2 0 -2 C-11 -2 -18 -9 -18 -20Z', '#C9A16A') +
+        '<circle cx="-6" cy="-26" r="2.6" fill="#3A2418"/><circle cx="6" cy="-20" r="2.6" fill="#3A2418"/><circle cx="-2" cy="-12" r="2.4" fill="#3A2418"/><circle cx="8" cy="-30" r="2" fill="#3A2418"/>';
+    }
+  };
+
+  function place(x, inner) { return '<g transform="translate(' + x + ' 202)">' + inner + '</g>'; }
+
+  function sceneSVG(a, label) {
+    uid++;
+    var kind = containerKind(a), t = drinkTop(a);
+    var side = SIDES[a.side] ? a.side : null, dev = DEVICES[a.method];
+    var cx = side ? 178 : 196, hot = a.temp !== 'soguk', top = TOPS[kind];
+    var body = ln('M14 203 C80 199 180 205 306 201', '#6B5546', 2, 0.45);
+    if (dev) body += place(78, dev(a));
+    body += place(cx, CONT[kind](t, a) + (hot && top ? steam(top - 6) : ''));
+    if (side) body += place(286, SIDES[side]());
+    return '<svg viewBox="0 0 320 214" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="' + label + '">' +
+      '<defs><filter id="rough' + uid + '" x="-5%" y="-5%" width="110%" height="110%">' +
+      '<feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="7"/>' +
+      '<feDisplacementMap in="SourceGraphic" scale="2.6" xChannelSelector="R" yChannelSelector="G"/></filter></defs>' +
+      '<g filter="url(#rough' + uid + ')">' + body + '</g></svg>';
+  }
+
+  // Node ile test edebilmek için (tarayıcıda çalışmaz)
+  if (typeof document === 'undefined') {
+    globalThis.KK = { QUESTIONS: QUESTIONS, stats: stats, isAsked: isAsked, optionsFor: optionsFor, coffeeName: coffeeName, sceneSVG: sceneSVG };
+    return;
+  }
+
+  /* ---------- Uygulama ---------- */
+  var els = {
+    screen: document.getElementById('screen'),
+    counter: document.getElementById('counter'),
+    progressWrap: document.getElementById('progressWrap'),
+    progress: document.getElementById('progress'),
+    cover: document.getElementById('progressCover')
+  };
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var view = 'intro', history = [], current = -1, pendingPrev = null, busy = false;
+  var GUESS_MIN = 1, GUESS_MAX = 30, GUESS_MID = 15;
+  var guess = null, guessDraft = null; // null = henüz tahmin yok ("?")
+
+  function answers() {
+    var a = {};
+    history.forEach(function (h) { a[QUESTIONS[h.i].id] = h.v; });
+    return a;
+  }
+  function nextIndex(from, a) {
+    for (var i = from; i < QUESTIONS.length; i++) if (isAsked(QUESTIONS[i], a)) return i;
+    return -1;
+  }
+
+  function updateHeader(bump) {
+    var show = view === 'q' || view === 'result';
+    els.counter.hidden = !show;
+    els.progressWrap.hidden = !show;
+    els.counter.textContent = 'Karar: ' + history.length;
+    if (bump && !reduceMotion) {
+      els.counter.classList.remove('bump'); void els.counter.offsetWidth; els.counter.classList.add('bump');
+    }
+    var pct = 0;
+    if (view === 'result') pct = 100;
+    else if (view === 'q') {
+      var done = history.length, remaining = stats(current, condState(answers())).max;
+      pct = Math.round(done / (done + remaining) * 100);
+    }
+    els.cover.style.width = (100 - pct) + '%';
+    els.progress.setAttribute('aria-valuenow', pct);
+  }
+
+  function go(render, dir) {
+    var sc = els.screen;
+    var done = function () {
+      window.scrollTo(0, 0);
+      var h = sc.querySelector('h1, h2');
+      if (h) h.focus({ preventScroll: true });
+      busy = false;
+    };
+    if (reduceMotion) { render(); done(); return; }
+    busy = true;
+    sc.classList.add('out', dir === 'back' ? 'to-right' : 'to-left');
+    setTimeout(function () {
+      render();
+      sc.classList.remove('out', 'to-right', 'to-left');
+      sc.classList.add('pre', dir === 'back' ? 'from-left' : 'from-right');
+      void sc.offsetWidth;
+      sc.classList.remove('pre', 'from-left', 'from-right');
+      done();
+    }, 170);
+  }
+
+  function renderIntro() {
+    view = 'intro';
+    els.screen.innerHTML =
+      '<section class="intro">' +
+        '<div class="intro-art">' + sceneSVG({ method: 'espresso', milk: 'var', foam: 'bol', temp: 'sicak', cup: 'fincan' }, 'Köpüklü bir fincan kahve ve yeşilden koyuya üç kahve çekirdeği') + '</div>' +
+        '<p class="hello">Hoş geldin! Kahveni nasıl alırsın?</p>' +
+        '<p class="hello-by">— Her baristanın ilk sorusu</p>' +
+        '<h1 tabindex="-1">Bir kahve,<br>kaç <em>karar?</em></h1>' +
+        '<p class="lede">Basit bir soru gibi duruyor. Ama cevabı aslında bir sürü küçük karar. Hadi sayalım.</p>' +
+        '<button type="button" class="cta" data-act="start">Başla</button>' +
+        '<p class="fine">Yaklaşık bir dakika · Kayıt yok · Çerez yok</p>' +
+      '</section>';
+    updateHeader(false);
+  }
+  function renderGuess() {
+    view = 'guess';
+    var empty = guessDraft === null;
+    els.screen.innerHTML =
+      '<button type="button" class="back" data-act="home"><span aria-hidden="true">←</span> Geri</button>' +
+      '<p class="eyebrow">Başlamadan önce</p>' +
+      '<h2 class="q-title" tabindex="-1">Sence bir kahve için kaç karar vereceksin?</h2>' +
+      '<p class="hint">Tahmin karar sayılmaz. Teknik olarak sayılır ama bu seferlik görmezden geliyoruz.</p>' +
+      '<div class="guess">' +
+        '<button type="button" class="step" data-act="minus" aria-label="Bir azalt">−</button>' +
+        '<output class="guess-num' + (empty ? ' empty' : '') + '" id="guessOut" aria-live="polite">' + (empty ? '?' : guessDraft) + '</output>' +
+        '<button type="button" class="step" data-act="plus" aria-label="Bir artır">+</button>' +
+      '</div>' +
+      '<input type="range" class="guess-range' + (empty ? ' unset' : '') + '" id="guessRange" min="' + GUESS_MIN + '" max="' + GUESS_MAX + '" value="' + (empty ? GUESS_MID : guessDraft) + '" aria-label="Tahminin">' +
+      '<div class="range-labels"><span>' + GUESS_MIN + '</span><span>' + GUESS_MAX + '</span></div>' +
+      '<div class="guess-actions">' +
+        '<button type="button" class="cta" id="beginBtn" data-act="begin"' + (empty ? ' disabled' : '') + '>' + (empty ? 'Önce bir sayı seç' : 'Tahminim bu, başlayalım') + '</button>' +
+        '<button type="button" class="linkish" data-act="skip">Tahmin etmeden başla</button>' +
+      '</div>';
+    updateHeader(false);
+  }
+  function setGuessDraft(v) {
+    guessDraft = Math.max(GUESS_MIN, Math.min(GUESS_MAX, v));
+    var out = document.getElementById('guessOut'), rng = document.getElementById('guessRange');
+    var btn = document.getElementById('beginBtn');
+    if (out) { out.textContent = guessDraft; out.classList.remove('empty'); }
+    if (rng) { rng.value = guessDraft; rng.classList.remove('unset'); }
+    if (btn) { btn.disabled = false; btn.textContent = 'Tahminim bu, başlayalım'; }
+  }
+  function stepGuess(d) { setGuessDraft((guessDraft === null ? GUESS_MID : guessDraft) + d); }
+
+  function compareHTML(n) {
+    if (guess === null) return '';
+    var top = Math.max(guess, n);
+    var fmt = function (x) { return x.toLocaleString('tr-TR', { maximumFractionDigits: 1 }); };
+    var text;
+    if (guess === n) text = 'Tam isabet. Ya kendini çok iyi tanıyorsun ya da bu uygulamayı daha önce denedin.';
+    else if (guess < n) {
+      var ratio = n / guess;
+      text = ratio >= 1.5
+        ? 'Gerçek sayı tahmininin <b>' + fmt(ratio) + ' katı</b>. Küçük kararlar işte böyle görünmez olur.'
+        : 'Tahmininden <b>' + (n - guess) + ' karar</b> fazla. Yakındın ama kahve yine de seni yakaladı.';
+    } else {
+      text = 'Tahmininden <b>' + (guess - n) + ' karar</b> az verdin. Kararlarının farkındasın galiba.';
+    }
+    var row = function (lab, v, cls) {
+      return '<div class="cmp-row"><span class="lab">' + lab + '</span>' +
+        '<span class="cmp-bar"><i class="' + cls + '" style="width:' + Math.round(v / top * 100) + '%"></i></span>' +
+        '<b>' + v + '</b></div>';
+    };
+    return '<div class="compare">' + row('Tahminin', guess, 'g') + row('Gerçek', n, 'r') +
+      '<p class="cmp-text">' + text + '</p></div>';
+  }
+
+  function renderQuestion(i) {
+    view = 'q'; current = i;
+    var q = QUESTIONS[i], a = answers();
+    var opts = optionsFor(q, a), title = val(q.title, a), hint = val(q.hint, a);
+    var prev = (pendingPrev && pendingPrev.i === i) ? pendingPrev.v : null;
+    var hasDesc = opts.some(function (o) { return o.d || o.sw; });
+    var cols = 1;
+    if (!hasDesc) {
+      var maxLen = Math.max.apply(null, opts.map(function (o) { return o.t.length; }));
+      if (opts.length === 2 && maxLen <= 14) cols = 2;
+      else if (opts.length === 3 && maxLen <= 8) cols = 3;
+      else if (opts.length === 4 && maxLen <= 13) cols = 2;
+    }
+    els.screen.innerHTML =
+      '<button type="button" class="back" data-act="back"><span aria-hidden="true">←</span> Geri</button>' +
+      '<p class="eyebrow">' + (history.length + 1) + '. karar · ' + q.label + '</p>' +
+      '<h2 class="q-title" tabindex="-1">' + title + '</h2>' +
+      '<p class="hint">' + hint + '</p>' +
+      '<div class="options cols-' + cols + '" role="group" aria-label="' + title + '">' +
+        opts.map(function (o) {
+          var was = o.v === prev;
+          return '<button type="button" class="opt' + (was ? ' was' : '') + '" data-v="' + o.v + '">' +
+            (o.sw ? '<span class="sw" style="background:' + o.sw + '"></span>' : '') +
+            '<span class="txt">' + o.t + (o.d ? '<small>' + o.d + '</small>' : '') + '</span>' +
+            (was ? '<em class="tag">önceki</em>' : '') +
+          '</button>';
+        }).join('') +
+      '</div>';
+    updateHeader(false);
+  }
+
+  function quip(n) {
+    if (n <= 11) return 'Hızlı ve net. Barista seni sever.';
+    if (n <= 14) return 'Sıradan bir sabah için gayet hareketli bir karar trafiği.';
+    if (n <= 16) return 'Kahve konusunda ciddi bir insansın.';
+    return 'Bu bir kahve değil, bir manifesto.';
+  }
+
+  function renderResult() {
+    view = 'result'; current = -1;
+    var a = answers(), n = history.length, all = stats(0, {}), name = coffeeName(a);
+    var recap = history.map(function (h) {
+      var q = QUESTIONS[h.i];
+      var o = optionsFor(q, a).filter(function (x) { return x.v === h.v; })[0];
+      return '<li><span class="k">' + q.label + '</span><span class="v">' + (o ? o.t : h.v) + '</span></li>';
+    }).join('');
+    els.screen.innerHTML =
+      '<section class="result">' +
+        '<div class="cupviz">' + sceneSVG(a, name) + '</div>' +
+        '<p class="eyebrow">Siparişin hazır</p>' +
+        '<h2 class="coffee-name" tabindex="-1">' + name + '</h2>' +
+        '<p class="verdict"><span>Bu kahve için</span><strong><span class="num" id="num">' + n + '</span> karar</strong><span>verdin.</span></p>' +
+        '<p class="quip">' + quip(n) + '</p>' +
+        compareHTML(n) +
+        '<p class="stat">Bu menüyle toplam <b>' + all.n.toLocaleString('tr-TR') + '</b> farklı kahve kombinasyonu mümkün. ' +
+          'En kısa rota <b>' + all.min + '</b>, en uzun rota <b>' + all.max + '</b> karar sürüyor.</p>' +
+        '<h3 class="recap-title">Verdiğin kararlar</h3>' +
+        '<ol class="recap">' + recap + '</ol>' +
+        '<div class="actions">' +
+          '<a class="cta" href="blog/gunluk-kararlar.html">Günde kaç karar? Yazıyı oku →</a>' +
+          '<button type="button" class="ghost" data-act="start">Tekrar dene</button>' +
+        '</div>' +
+        '<button type="button" class="linkish" data-act="back">Son kararı değiştir</button>' +
+      '</section>';
+    updateHeader(false);
+    countUp(document.getElementById('num'), n);
+  }
+
+  function countUp(el, n) {
+    if (reduceMotion || !el) return;
+    var t0 = null, dur = 700;
+    el.textContent = '0';
+    function step(t) {
+      if (!t0) t0 = t;
+      var p = Math.min(1, (t - t0) / dur);
+      el.textContent = Math.round(n * (1 - Math.pow(1 - p, 3)));
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  // Başla / Tekrar dene → önce tahmin ekranı
+  function start() {
+    history = []; pendingPrev = null;
+    if (guess !== null) guessDraft = guess;
+    go(renderGuess, 'fwd');
+  }
+  function begin(withGuess) {
+    if (busy) return;
+    guess = withGuess ? guessDraft : null;
+    history = []; pendingPrev = null;
+    var i = nextIndex(0, {});
+    go(function () { renderQuestion(i); }, 'fwd');
+  }
+
+  function choose(v, btn) {
+    if (busy || view !== 'q') return;
+    busy = true;
+    btn.classList.add('picked');
+    var i = current;
+    setTimeout(function () {
+      history.push({ i: i, v: v });
+      pendingPrev = null;
+      var nxt = nextIndex(i + 1, answers());
+      updateHeader(true);
+      busy = false;
+      go(function () { nxt < 0 ? renderResult() : renderQuestion(nxt); }, 'fwd');
+    }, reduceMotion ? 0 : 140);
+  }
+
+  function back() {
+    if (busy) return;
+    if (!history.length) { go(renderGuess, 'back'); return; }
+    var h = history.pop();
+    pendingPrev = h;
+    updateHeader(true);
+    go(function () { renderQuestion(h.i); }, 'back');
+  }
+
+  els.screen.addEventListener('click', function (e) {
+    var t = e.target.closest('button');
+    if (!t) return;
+    var act = t.dataset.act;
+    if (act === 'start') start();
+    else if (act === 'back') back();
+    else if (act === 'home') { if (!busy) go(renderIntro, 'back'); }
+    else if (act === 'minus') stepGuess(-1);
+    else if (act === 'plus') stepGuess(1);
+    else if (act === 'begin') { if (guessDraft !== null) begin(true); }
+    else if (act === 'skip') begin(false);
+    else if (t.dataset.v !== undefined) choose(t.dataset.v, t);
+  });
+  els.screen.addEventListener('input', function (e) {
+    if (e.target.id === 'guessRange') setGuessDraft(parseInt(e.target.value, 10));
+  });
+
+  renderIntro();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bir kahve, 15 karar: Seçenek özgürlük mü, yük mü? · kahvelerce</title>
+<meta name="description" content="Bir kahve için 11–19 karar veriyoruz. Seçenekler bizi özgürleştiriyor mu, yoruyor mu? Bolluk Paradoksu, karar yorgunluğu ve bilgi fazlalığı üzerine.">
+<meta property="og:title" content="Bir kahve, 15 karar: Seçenek özgürlük mü, yük mü?">
+<meta property="og:description" content="Bolluk Paradoksu, karar yorgunluğu ve bilgi fazlalığı: Seçenekler ne zaman özgürlük, ne zaman yük?">
+<meta property="og:type" content="article">
+<meta name="theme-color" content="#F5EFE6">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cg transform='rotate(30 16 16)'%3E%3Cellipse cx='16' cy='16' rx='10' ry='13' fill='%238E5D37'/%3E%3Cpath d='M16 5 C11 12 21 20 16 27' stroke='%23F5EFE6' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/g%3E%3C/svg%3E">
+<style>
+  :root {
+    color-scheme: light;
+    --roast-1: #A3AE71;
+    --roast-2: #C9B877;
+    --roast-3: #BE8B4F;
+    --roast-4: #8E5D37;
+    --roast-5: #5C3A22;
+    --roast-6: #2F1E14;
+    --green-deep: #5F6B3A;
+    --green-tint: #E8EBD7;
+    --rust: #A6432A;
+    --rust-deep: #86331F;
+    --rust-tint: #F4DED4;
+    --honey-tint: #F1E8CC;
+    --bg: #F5EFE6;
+    --paper: #FFFDF9;
+    --ink: #2B1B12;
+    --ink-soft: #6B5546;
+    --line: #E4D7C5;
+    --roast-gradient: linear-gradient(90deg, var(--roast-1), var(--roast-2) 22%, var(--roast-3) 45%, var(--roast-4) 66%, var(--roast-5) 84%, var(--roast-6));
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: var(--sans); font-size: 17px; line-height: 1.65;
+  }
+  h1, h2, h3 { font-family: var(--serif); font-weight: 700; line-height: 1.15; letter-spacing: -0.01em; }
+  a { color: var(--rust); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  a:hover { color: var(--rust-deep); }
+  a:focus-visible, .cta:focus-visible { outline: 3px solid var(--rust); outline-offset: 3px; border-radius: 4px; }
+
+  /* Üst bar */
+  .top {
+    position: sticky; top: 0; z-index: 5;
+    background: rgba(245, 239, 230, 0.94);
+    -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+    padding-top: env(safe-area-inset-top);
+  }
+  .top-inner {
+    max-width: 680px; margin: 0 auto; padding: 12px 16px 10px;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  }
+  .brand { font-family: var(--serif); font-weight: 700; font-size: 1.15rem; color: var(--ink); text-decoration: none; }
+  .brand span { color: var(--ink-soft); font-weight: 400; }
+  .pill {
+    background: var(--rust); color: #fff; border-radius: 999px;
+    padding: 6px 14px; font-weight: 700; font-size: 0.9rem; text-decoration: none; white-space: nowrap;
+  }
+  .pill:hover { background: var(--rust-deep); color: #fff; }
+  .strip { height: 6px; background: var(--roast-gradient); }
+
+  /* Yazı */
+  .wrap { max-width: 680px; margin: 0 auto; padding: 0 16px calc(48px + env(safe-area-inset-bottom)); }
+  article { padding-top: 28px; }
+  .eyebrow {
+    font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--green-deep); font-weight: 700; margin: 0;
+  }
+  h1 { font-size: clamp(2.1rem, 8.6vw, 3.05rem); margin: 0.3em 0 0.35em; }
+  h1 em { font-style: normal; color: var(--rust); }
+  .lede { font-size: 1.16rem; line-height: 1.55; margin: 0 0 12px; }
+  .meta { font-size: 0.88rem; color: var(--ink-soft); margin: 0 0 8px; }
+  .hero-art svg { width: min(300px, 80vw); height: auto; display: block; margin: -14px 0 4px -6px; }
+  h2 { font-size: clamp(1.45rem, 5.6vw, 1.9rem); margin: 2.1em 0 0.5em; }
+  h3 { font-size: 1.2rem; margin: 1.6em 0 0.4em; }
+  p { margin: 0 0 1em; }
+  ul, ol { padding-left: 1.3em; margin: 0 0 1.1em; }
+  li { margin-bottom: 0.45em; }
+  strong { font-weight: 700; }
+  sup.ref { font-size: 0.7em; line-height: 0; font-weight: 700; }
+  sup.ref a { text-decoration: none; padding: 0 1px; }
+
+  /* Kanıt etiketleri */
+  .tag {
+    display: inline-block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.02em;
+    border-radius: 999px; padding: 2px 9px; vertical-align: 2px; white-space: nowrap; line-height: 1.5;
+  }
+  .tag.unknown { color: var(--rust); background: var(--rust-tint); }
+  .tag.debated { color: var(--roast-5); background: var(--honey-tint); }
+  .tag.solid { color: var(--green-deep); background: var(--green-tint); }
+  .tag.anecdote { color: var(--ink-soft); background: var(--line); }
+  .legend {
+    display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center;
+    font-size: 0.85rem; color: var(--ink-soft); margin: 14px 0 0;
+  }
+
+  /* Kartlar */
+  .card {
+    background: var(--paper); border: 1px solid var(--line); border-radius: 14px;
+    padding: 16px 18px; margin: 22px 0;
+  }
+  .card > :last-child { margin-bottom: 0; }
+  .card-title { font-family: var(--serif); font-weight: 700; font-size: 1.1rem; margin: 0 0 8px; }
+  .caption { font-size: 0.9rem; color: var(--ink-soft); margin: 10px 0 0; }
+
+  /* Kaynak zinciri */
+  .chain { list-style: none; padding: 0; margin: 20px 0 22px; position: relative; }
+  .chain li {
+    position: relative; margin: 0 0 12px 30px; padding: 12px 14px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 12px; font-size: 0.96rem; line-height: 1.5;
+  }
+  .chain li::before {
+    content: ""; position: absolute; left: -24px; top: 18px; width: 12px; height: 12px; border-radius: 50%;
+    background: var(--roast-3); border: 2px solid var(--bg);
+  }
+  .chain li::after {
+    content: ""; position: absolute; left: -19px; top: 32px; bottom: -14px; border-left: 2px dashed var(--line);
+  }
+  .chain li:last-child::after { display: none; }
+  .chain li.end { background: var(--rust-tint); border-color: transparent; font-weight: 700; color: var(--rust-deep); }
+  .chain li.end::before { background: var(--rust); }
+  .chain b { display: block; font-family: var(--serif); font-size: 1.02rem; }
+
+  /* Tahmin ↔ sayım (uygulamadaki karşılaştırmanın aynısı) */
+  .cmp-row { display: grid; grid-template-columns: 4.8em 1fr 2.6em; align-items: center; gap: 10px; margin-bottom: 10px; font-size: 0.94rem; }
+  .cmp-row .lab { color: var(--ink-soft); }
+  .cmp-row b { text-align: right; font-variant-numeric: tabular-nums; }
+  .cmp-bar { height: 12px; border-radius: 999px; background: var(--bg); overflow: hidden; }
+  .cmp-bar i { display: block; height: 100%; border-radius: 999px; }
+
+  /* Izgara */
+  .grid { display: grid; gap: 10px; margin: 18px 0 22px; }
+  @media (min-width: 560px) { .grid { grid-template-columns: 1fr 1fr; } }
+  .cell {
+    background: var(--paper); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px;
+    font-size: 0.95rem; line-height: 1.5;
+  }
+  .cell b { display: block; font-family: var(--serif); font-size: 1.05rem; margin-bottom: 4px; }
+  .cell .n { color: var(--rust); font-family: var(--serif); font-weight: 700; margin-right: 6px; }
+
+  /* Büyük rakam */
+  .bignum { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin: 6px 0 2px; }
+  .bignum strong { font-family: var(--serif); font-size: clamp(2.6rem, 13vw, 3.6rem); line-height: 1; color: var(--rust); font-variant-numeric: tabular-nums; }
+
+  /* Öneriler */
+  ol.tips { list-style: none; padding: 0; counter-reset: t; margin: 18px 0 22px; }
+  ol.tips > li {
+    counter-increment: t; position: relative; padding: 2px 0 14px 46px; margin: 0 0 12px;
+    border-bottom: 1px dashed var(--line);
+  }
+  ol.tips > li:last-child { border-bottom: 0; }
+  ol.tips > li::before {
+    content: counter(t); position: absolute; left: 0; top: 0;
+    width: 32px; height: 32px; border-radius: 50%; background: var(--rust); color: #fff;
+    font-weight: 700; display: flex; align-items: center; justify-content: center; font-size: 0.95rem;
+  }
+  ol.tips h3 { margin: 0 0 4px; font-size: 1.12rem; }
+  ol.tips p { margin: 0 0 0.5em; }
+
+  /* Uygulamaya çağrı: konuşma balonu dili */
+  .callout {
+    background: var(--paper); border: 1.5px solid var(--ink); border-radius: 18px;
+    padding: 18px 20px; margin: 30px 0; box-shadow: 4px 4px 0 var(--rust-tint);
+  }
+  .callout p { margin: 0 0 12px; }
+  .callout .q { font-family: var(--serif); font-weight: 700; font-size: 1.3rem; line-height: 1.25; margin-bottom: 6px; }
+  .cta {
+    display: inline-flex; justify-content: center; align-items: center; gap: 8px;
+    min-height: 52px; padding: 13px 24px; border-radius: 999px;
+    background: var(--rust); color: #fff; font-weight: 700; text-decoration: none;
+    box-shadow: 0 2px 0 var(--rust-deep); transition: background 0.15s, transform 0.1s;
+  }
+  .callout .cta { width: 100%; padding: 13px 16px; font-size: 0.98rem; white-space: nowrap; }
+  @media (max-width: 359px) { .callout .cta { white-space: normal; } }
+  .cta:hover { background: var(--rust-deep); color: #fff; }
+  .cta:active { transform: translateY(1px); box-shadow: none; }
+
+  /* Diğer yazı */
+  .next {
+    display: block; text-decoration: none; color: var(--ink);
+    background: var(--paper); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; margin: 18px 0;
+  }
+  .next:hover { border-color: var(--roast-3); color: var(--ink); }
+  .next small { display: block; font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--green-deep); font-weight: 700; }
+  .next span { font-family: var(--serif); font-weight: 700; font-size: 1.2rem; line-height: 1.3; }
+
+  /* Kaynaklar */
+  .sources { margin-top: 40px; padding-top: 6px; border-top: 1px solid var(--line); }
+  .sources h2 { margin-top: 1em; font-size: 1.35rem; }
+  .sources ol { font-size: 0.88rem; line-height: 1.55; color: var(--ink-soft); padding-left: 1.6em; }
+  .sources li { margin-bottom: 0.7em; overflow-wrap: anywhere; }
+  .sources li:target { background: var(--rust-tint); border-radius: 6px; }
+  .sources .note { font-size: 0.88rem; color: var(--ink-soft); }
+
+  footer {
+    max-width: 680px; margin: 0 auto; padding: 18px 16px calc(28px + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--line); font-size: 0.85rem; color: var(--ink-soft);
+    display: flex; flex-wrap: wrap; gap: 6px 14px; justify-content: space-between;
+  }
+  footer a { color: var(--ink-soft); }
+
+  /* Bu yazıya özel */
+  .swing { display: flex; align-items: center; gap: 8px; font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; margin: 2.4em 0 -1.2em; }
+  .swing i { flex: 1; height: 4px; border-radius: 999px; background: var(--roast-gradient); }
+  .swing.to-free { color: var(--green-deep); }
+  .swing.to-load { color: var(--rust); }
+  .swing.to-load i { transform: scaleX(-1); }
+  .versus { display: grid; gap: 12px; margin: 18px 0 22px; }
+  @media (min-width: 560px) { .versus { grid-template-columns: 1fr 1fr; } }
+  .type { background: var(--paper); border: 1px solid var(--line); border-radius: 14px; padding: 16px; font-size: 0.95rem; line-height: 1.5; }
+  .type.max { border-top: 5px solid var(--rust); }
+  .type.sat { border-top: 5px solid var(--green-deep); }
+  .type h3 { margin: 0; font-size: 1.2rem; }
+  .type .en { margin: 0 0 6px; font-size: 0.82rem; color: var(--ink-soft); font-style: italic; }
+  .type dl { margin: 0; }
+  .type dt { font-size: 0.74rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; margin-top: 10px; }
+  .type.max dt { color: var(--rust); }
+  .type.sat dt { color: var(--green-deep); }
+  .type dd { margin: 2px 0 0; }
+  .load { display: grid; gap: 14px; }
+  @media (min-width: 560px) { .load { grid-template-columns: 1fr 1fr; } }
+  .load-row p { margin: 0 0 6px; font-size: 0.93rem; }
+  .load-row p b { font-variant-numeric: tabular-nums; }
+  .dots { display: grid; grid-template-columns: repeat(3, 16px); gap: 6px; }
+  .dots span { width: 16px; height: 16px; border-radius: 50%; }
+  .dots.light span { background: var(--green-deep); }
+  .dots.heavy span { background: var(--rust); }
+  .nudge {
+    background: var(--rust-tint); border-radius: 12px; padding: 12px 16px; margin: 0 0 1em;
+    font-size: 0.95rem; line-height: 1.5;
+  }
+  .nudge a { font-weight: 700; }
+  blockquote {
+    margin: 20px 0 22px; padding: 4px 0 4px 18px; border-left: 4px solid var(--roast-3);
+    font-family: var(--serif); font-size: 1.08rem; line-height: 1.55; font-style: italic; color: var(--ink);
+  }
+  blockquote p { margin: 0 0 6px; }
+  blockquote cite { display: block; font-family: var(--sans); font-style: normal; font-size: 0.85rem; color: var(--ink-soft); }
+  .callout.solo { text-align: center; }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-inner">
+    <a class="brand" href="../index.html">kahvelerce<span>.com</span></a>
+    <a class="pill" href="../index.html">Kaç karar? Dene</a>
+  </div>
+  <div class="strip" aria-hidden="true"></div>
+</header>
+
+<main class="wrap">
+<article>
+  <p class="eyebrow">Blog · Kararlar</p>
+  <h1>Bir kahve, 15 karar: <em>Seçenek özgürlük mü, yük mü?</em></h1>
+  <p class="meta">Okuma süresi: yaklaşık 9 dakika</p>
+  <div class="hero-art"><svg viewBox="0 0 320 214" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Köpüklü bir fincan kahve ve üç kahve çekirdeği"><defs><filter id="rough1" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="7"/><feDisplacementMap in="SourceGraphic" scale="2.6" xChannelSelector="R" yChannelSelector="G"/></filter></defs><g filter="url(#rough1)"><path d="M14 203 C80 199 180 205 306 201" fill="none" stroke="#6B5546" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity="0.45"/><g transform="translate(78 202)"><g transform="translate(-34 -10) rotate(80) scale(1.15)"><path d="M0 -12 C8 -12 9 12 0 12 C-9 12 -8 -12 0 -12Z" fill="#A3AE71" transform="translate(2.2 1.8)"/><path d="M0 -12 C8 -12 9 12 0 12 C-9 12 -8 -12 0 -12Z" fill="none" stroke="#2B1B12" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/><path d="M0 -9 C-4 -3 4 3 0 9" fill="none" stroke="#6E7B45" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/></g><g transform="translate(-4 -9) rotate(104) scale(1.15)"><path d="M0 -12 C8 -12 9 12 0 12 C-9 12 -8 -12 0 -12Z" fill="#BE8B4F" transform="translate(2.2 1.8)"/><path d="M0 -12 C8 -12 9 12 0 12 C-9 12 -8 -12 0 -12Z" fill="none" stroke="#2B1B12" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/><path d="M0 -9 C-4 -3 4 3 0 9" fill="none" stroke="#8E5D37" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/></g><g transform="translate(26 -10) rotate(70) scale(1.15)"><path d="M0 -12 C8 -12 9 12 0 12 C-9 12 -8 -12 0 -12Z" fill="#3A2418" transform="translate(2.2 1.8)"/><path d="M0 -12 C8 -12 9 12 0 12 C-9 12 -8 -12 0 -12Z" fill="none" stroke="#2B1B12" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/><path d="M0 -9 C-4 -3 4 3 0 9" fill="none" stroke="#8E5D37" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/></g></g><g transform="translate(196 202)"><path d="M-66 -2 C-46.199999999999996 -11.450000000000001 46.199999999999996 -11.450000000000001 66 -2 C46.199999999999996 7.450000000000001 -46.199999999999996 7.450000000000001 -66 -2Z" fill="#FFFDF9" transform="translate(2.2 1.8)"/><path d="M-66 -2 C-46.199999999999996 -11.450000000000001 46.199999999999996 -11.450000000000001 66 -2 C46.199999999999996 7.450000000000001 -46.199999999999996 7.450000000000001 -66 -2Z" fill="none" stroke="#2B1B12" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/><path d="M52 -62 C80 -64 80 -26 44 -26" fill="none" stroke="#2B1B12" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/><path d="M-58 -74 C-57 -44 -44 -16 -22 -9 C-10 -6 10 -6 22 -9 C44 -16 57 -44 58 -74" fill="#FFFDF9" transform="translate(2.2 1.8)"/><path d="M-58 -74 C-57 -44 -44 -16 -22 -9 C-10 -6 10 -6 22 -9 C44 -16 57 -44 58 -74" fill="none" stroke="#2B1B12" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/><path d="M-46 -56 C-42 -38 -34 -26 -24 -19" fill="none" stroke="#2B1B12" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" opacity="0.3"/><path d="M-58 -74 C-40.599999999999994 -83.45 40.599999999999994 -83.45 58 -74 C40.599999999999994 -64.55 -40.599999999999994 -64.55 -58 -74Z" fill="#F1E2CC"/><path d="M-58 -74 C-40.599999999999994 -83.45 40.599999999999994 -83.45 58 -74 C40.599999999999994 -64.55 -40.599999999999994 -64.55 -58 -74Z" fill="none" stroke="#2B1B12" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/><circle cx="-25" cy="-74.6" r="1.5" fill="#7A4E2D" opacity=".6"/><circle cx="-12.5" cy="-72.5" r="1.5" fill="#7A4E2D" opacity=".6"/><circle cx="0" cy="-75.2" r="1.5" fill="#7A4E2D" opacity=".6"/><circle cx="10" cy="-73.1" r="1.5" fill="#7A4E2D" opacity=".6"/><circle cx="22.5" cy="-74.3" r="1.5" fill="#7A4E2D" opacity=".6"/><circle cx="-5" cy="-73.7" r="1.5" fill="#7A4E2D" opacity=".6"/><circle cx="15" cy="-75.8" r="1.5" fill="#7A4E2D" opacity=".6"/><circle cx="-17.5" cy="-75.8" r="1.5" fill="#7A4E2D" opacity=".6"/><circle cx="5" cy="-72.2" r="1.5" fill="#7A4E2D" opacity=".6"/><g class="steam" fill="none" stroke="#6B5546" stroke-width="2.4" stroke-linecap="round" opacity=".5"><path d="M-12 -90 c-6 -8 6 -13 0 -16 c-6 -8 5 -12 1 -16"/><path d="M0 -90 c-6 -10 6 -15 0 -20 c-6 -10 5 -14 1 -20"/><path d="M12 -90 c-6 -8 6 -13 0 -16 c-6 -8 5 -12 1 -16"/></g></g></g></svg></div>
+
+  <p>Sabah uyandın ve kahveni içmek için hareketlendin... Evde mi, kafede mi? Sıcak mı, soğuk mu? Espresso mu, filtre mi? Sütlü mü? Hangi süt? Şeker? Boy?</p>
+  <p>Eğer az önce <a href="../index.html">kahve uygulamamız</a> ile kahve tercihini yaptıysan, bir kahveye ulaşmak için nasıl bir zihinsel yoldan geçtiğimizi artık biliyorsun. Seçtiğin yola göre tek bir kahve 11 ile 19 karar arasında sürüyor. Bizim menüdeki seçeneklerle tam 138.269.568 farklı kahve kombinasyonu çıkıyor.</p>
+  <p class="nudge">Eğer uygulamayı henüz kullanmadıysan, yazıya başlamadan önce <a href="../index.html">şansını denemeni</a> tavsiye ederim.</p>
+  <p>Az önce 11–19 arası karar verdin. Peki yorucu muydu? Bu yazı o soruyla ilgili.</p>
+
+  <h2>Önce bir bakalım; Günde kaç karar veriyoruz? (35.000)</h2>
+  <p>İnternette çok paylaşılan bir iddia var, diyor ki; "Yetişkin bir insan günde yaklaşık 35.000 karar veriyormuş." Rakamın izini sürenler, iddianın bir yazıdan ötekine aktarıldığını, arkasında bir ölçüm ya da bilimsel dayanak olmadığını gösteriyor.<sup class="ref"><a href="#k1">1</a></sup> (Günde 16 saat uyanık olduğumuzu varsayalım. 35.000 karar, uyanık geçen her <strong>1,6 saniyede</strong> bir karar demek.) Ancak altında yatan fikir doğru! Farkında olduğumuzdan çok daha fazla karar veriyoruz. Bir çalışmada insanlar günde ortalama 14 yemek kararı verdiklerini tahmin etti. Günlerini öğün öğün döküp saydıklarında ortalama 226 karar çıktı.<sup class="ref"><a href="#k2">2</a></sup></p>
+  <div class="card" role="figure" aria-label="Yemek kararları: tahmin 14, sayım 226">
+    <p class="card-title">Günde kaç yemek kararı?</p>
+    <div class="cmp-row"><span class="lab">Tahmin</span><span class="cmp-bar"><i style="width:6.2%;background:var(--green-deep)"></i></span><b>14</b></div>
+    <div class="cmp-row"><span class="lab">Sayım</span><span class="cmp-bar"><i style="width:100%;background:var(--rust)"></i></span><b>226</b></div>
+    <p class="caption">Çalışmanın yazarı Brian Wansink'in birçok makalesi sonradan geri çekildi.<sup class="ref"><a href="#k3">3</a></sup> Bu yüzden rakamı kesin bir ölçüm değil, kabaca bir işaret olarak okumak gerek.</p>
+  </div>
+  <p>Peki bu kadar karar bize iyi mi geliyor, kötü mü?</p>
+
+  <p class="swing to-free" aria-hidden="true"><span>Özgürlük</span><i></i></p>
+  <h2>Daha çok seçenek, daha çok özgürlük (?)</h2>
+  <p><strong>Klasik bakış basit; "Ne kadar çok seçenek, o kadar iyi."</strong> Herkes kendine en uygun olanı bulacaktır. Bu düşüncenin büyük bir doğruluk payı var. İnek sütü içmeyen biri için menüde yulaf sütünün olması gerçek bir özgürlük. ("Yulaf sütü aslında süt değil" tartışmalarını başka bir yazıya bırakalım lütfen 🙂) Oysa bir zamanlar tek soruyla kahvemizi içerdik; "Sade mi, şekerli mi?" O kadar da büyük bir problem(!?) değildi.</p>
+  <p>Aslında araştırmalar da insanların çeşitliliği sevdiğini gösteriyor. Seçenek fazlalığı üzerine çalışan araştırmacılar bile <strong>çözümün seçenekleri kısmak değil, onları daha iyi düzenlemek olduğunu</strong> söylüyor.<sup class="ref"><a href="#k4">4</a></sup> Yani buraya kadar her şey normal. Ta ki seçenekler çoooooook fazla oluncaya dek...</p>
+
+  <p class="swing to-load" aria-hidden="true"><i></i><span>Yük</span></p>
+  <h2>Seçenek yüktür: Bolluk Paradoksu</h2>
+  <p>Amerikalı psikolog Barry Schwartz, 2004 tarihli <i>The Paradox of Choice</i> kitabında bu bakışa itiraz etti. Kitap Türkçe olarak Mediacat'ten <i>Bolluk Paradoksu: Çok Seçenek Özgürlük mü, Mutsuzluk mu?</i> adıyla çıktı.</p>
+  <p>Hikâye bir kot pantolonla başlıyor. Schwartz yeni bir kot almaya gidiyor, satıcı ona kesimi, kalıbı, nasıl oturmasını istediğini soruyor. Schwartz bunu sonradan şöyle anlatıyor: "Eskiden beş dakika süren bir iş için bir saat harcadığımı fark ettim."<sup class="ref"><a href="#k5">5</a></sup></p>
+  <p>Schwartz'a göre hiç seçeneğin olmaması kötü, ama bir eşikten sonra her yeni seçenek fayda yerine yük getiriyor. Kitabın önsöz kısmından alıntıyla;</p>
+  <blockquote>
+    <p>"... önümüze bazı seçenekler sunulmasının iyi olması, daha fazla seçenek sunulmasının daha iyi olacağı anlamına gelmez. Örneklerle göstermeye çalışacağım üzere, çok fazla seçeneğe sahip olmanın bir bedeli vardır. Toplum olarak, özgürlük, özgür irade ve çeşitlilikten büyülenmiş durumdayız ve önümüze çıkan hiçbir opsiyondan vazgeçmek istemiyoruz. Fakat bize sunulan seçeneklerin hepsine birden inatla sarılmamız, bizi kötü kararlar almaya, kaygıya, strese, tatminsizliğe, hatta klinik depresyona götürüyor."<sup class="ref"><a href="#k6">6</a></sup></p>
+    <cite>Barry Schwartz, <i>Bolluk Paradoksu</i>, Önsöz</cite>
+  </blockquote>
+  <p>Kitapta bu yükün getirdiği sonuçları, yani çok fazla seçeneğin bedelini sayıyor;</p>
+  <div class="grid">
+    <div class="cell"><b><span class="n">1</span>Karar felci (analiz felci)</b>Seçenek sayısı çok fazla olduğunda, aralarından birini seçmek bilişsel olarak o kadar zorlaşır ki insan hiçbir kararı veremez hâle gelir, süreci sürekli erteler.</div>
+    <div class="cell"><b><span class="n">2</span>Fırsat maliyeti kaygısı</b>Birini seçince geride bıraktığın diğer seçeneklerin iyi yanlarından vazgeçersin. "Acaba diğeri daha mı iyiydi?" sorusu, seçtiğinin tadını kaçırır.</div>
+    <div class="cell"><b><span class="n">3</span>Yükselen beklenti</b>İki çeşit kot varken beklentin düşüktür. Yüzlerce çeşit varsa kusursuzunu bulmayı beklersin.</div>
+    <div class="cell"><b><span class="n">4</span>Kendini suçlama</b>Seçenek azken kötü bir sonucu piyasaya ya da kadere bağlarsın, ne de olsa seçeneklerin azdır. Fakat yüzlerce seçenek arasından kötü bir tercih yaptıysan suçlu sensindir, çünkü doğru tercihi yapmamışsındır.</div>
+  </div>
+
+  <h3>En iyiyi arayanlar ve yetinenler</h3>
+  <p>Kitabın en çok alıntılanan kısmı bu ayrım. Fikir Schwartz'tan daha öncesine dayanıyor; Herbert Simon 1950'lerde "tatmin olmak" (<i>satisfy</i>) ve "yetmek" (<i>suffice</i>) kelimelerini birleştirip <i>satisficing</i> kavramını ortaya attı. Ona göre insanın en iyiyi bulacak zamanı ve bilgisi çoğu zaman yoktur, bu yüzden "yeterince iyi" olanı seçer.<sup class="ref"><a href="#k7">7</a></sup> Schwartz bunu bir kişilik eğilimi olarak ele aldı.</p>
+  <div class="versus">
+    <div class="type max">
+      <h3>En iyiyi arayanlar</h3>
+      <p class="en">Maximizers</p>
+      <dl>
+        <dt>Nasıl seçer?</dt><dd>Her zaman, her konuda olabilecek en mükemmel seçimi yapmak isterler. Tüm alternatifleri tek tek incelerler.</dd>
+        <dt>Kahve sırasında</dt><dd>Menüyü baştan sona okur, arkasında bir sıra oluşur, nihayet kararını verir. Siparişini aldıktan sonra gözü yan masadakilerin kahvesindedir.</dd>
+      </dl>
+    </div>
+    <div class="type sat">
+      <h3>Yetinenler</h3>
+      <p class="en">Satisficers</p>
+      <dl>
+        <dt>Nasıl seçer?</dt><dd>Kendi belirledikleri temel kriterlere uyan bir seçenek bulduklarında arayışı sonlandırırlar.</dd>
+        <dt>Kahve sırasında</dt><dd>"Sütlü, şekersiz, orta boy" der ve gerisine bakmaz. Genel olarak daha mutlu, seçimlerinden memnun, kararlarıyla barışık insanlardır.</dd>
+      </dl>
+    </div>
+  </div>
+  <p>Schwartz ve ekibinin 2002 tarihli çalışmasında en iyiyi arama eğilimi yüksek olanlar daha az mutlu ve hayatlarından daha az memnundu. Pişmanlık puanları da daha yüksekti.<sup class="ref"><a href="#k8">8</a></sup> İş arayan son sınıf öğrencileriyle yapılan bir çalışmada, en iyiyi arayanlar yaklaşık <strong>%20 daha yüksek</strong> maaşlı işler buldu ama hem işten hem süreçten daha az memnundu. Yetinenler (kanaatkârlar) ise daha düşük maaşlı işler bulsa da hem iş arama sürecinden hem de buldukları işten daha memnundu.<sup class="ref"><a href="#k9">9</a></sup> Makalenin adı da durumu güzel anlatıyor aslında; "Daha iyisini yapıp daha kötü hissetmek." Tabii bu genel bir kural değil, hepimiz bu konudaki davranışımızı değiştirebiliriz.</p>
+  <p>Olumsuz sonuçlarla daha güçlü ilişkisi olan şey aslında en iyisini istemek değil; durmadan alternatif aramak ve karar vermekte zorlanmak, kararsız kalmak. Farklı sonuçlara ulaşan çalışmalarda bile tutarlı kalan en net bulgu, en iyiyi arayanların pişmanlığa daha yatkın olmasıydı.<sup class="ref"><a href="#k10">10</a></sup> <span class="tag debated">Tartışmalı</span></p>
+
+  <p class="swing to-load" aria-hidden="true"><i></i><span>Yük</span></p>
+  <h2>Her seçim enerjimizi mi tüketiyor?</h2>
+  <p>Uzun bir alışveriş ya da yoğun bir iş gününden sonra "Kafam durdu" dediğimiz olur. Bu hissi açıklamaya çalışan çalışmalardan biri, 1990'ların sonunda "ego tükenmesi" kuramını ortaya attı. Kurama göre irade, kas gibi, kullandıkça yorulan sınırlı bir kaynak. 2008'deki bir çalışma bunu kararlara uyguladı, art arda seçim yapan katılımcılar, sonraki zor görevlerde daha çabuk pes etti.<sup class="ref"><a href="#k11">11</a></sup></p>
+  <p>Bizim kahve testimize benzeyen, gündelik hayattan bir örnek araba alırken yaşanıyor. Almanya'da yeni araba sipariş eden müşteriler, aracı adım adım kendileri yapılandırıyordu. 4 farklı vites topuzundan 56 renge kadar bir sürü seçeneği kendileri belirliyordu. Araştırmacılar bu soruların sırasını değiştirdi. Çok seçenekli soruları başta görenler, ilerleyen adımlarda giderek daha sık firmanın önerdiği varsayılanı kabul etti. Sorular aynıydı, sadece sırası farklıydı, ama ortaya çıkan araba da fiyatı da değişti.<sup class="ref"><a href="#k12">12</a></sup></p>
+  <p>Konuyla ilgili asıl sarsıntı tekrar testlerinde yaşandı. Bu deneylerde bir grup önce yorucu bir görev yapıyor, diğeri aynı görevin kolay hâlini. Sonra iki grup da aynı ikinci testi çözüyor. Kuram doğruysa yorulan grubun ikinci testte daha kötü sonuç alması gerekiyor. 2016'da 23 laboratuvar, önceden ortak bir plan üzerinde anlaşıp bu deneyi 2.141 kişiyle tekrarladı. İki grup arasındaki fark neredeyse sıfır çıktı.<sup class="ref"><a href="#k13">13</a></sup> 2021'de 36 laboratuvar ve 3.531 kişiyle, bu kez yöntemi kuramın savunucuları seçerek yapılan ikinci denemede de fark bulunamadı.<sup class="ref"><a href="#k14">14</a></sup> <span class="tag debated">Tartışmalı</span></p>
+
+  <p class="swing to-free" aria-hidden="true"><span>Denge</span><i></i></p>
+  <h2>Asıl yük: seçenek sayısı değil, bilgi</h2>
+  <p>Bizi yoran çoğu zaman seçeneklerin sayısı değil, her seçenek hakkında tartmamız gereken bilgi miktarı. Buna <strong>bilgi fazlalığı</strong> (<i>information overload</i>) deniyor. Terimi 1960'larda yönetim araştırmacıları kullanmaya başladı, Alvin Toffler 1970'te <i>Gelecek Şoku</i> kitabıyla yaygınlaştırdı.<sup class="ref"><a href="#k15">15</a></sup></p>
+  <div class="card" role="figure" aria-label="Aynı üç kahve: iki özellikle 6 bilgi, altı özellikle 18 bilgi">
+    <p class="card-title">Aynı üç kahve, farklı yük</p>
+    <div class="load">
+      <div class="load-row">
+        <p><b>3 kahve × 2 özellik = 6 bilgi</b><br>Fiyat ve bardak boyutu.</p>
+        <div class="dots light" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      </div>
+      <div class="load-row">
+        <p><b>3 kahve × 6 özellik = 18 bilgi</b><br>Menşei, işleme, kavurma, tat notası, puan, fiyat.</p>
+        <div class="dots heavy" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      </div>
+    </div>
+    <p class="caption">Seçenek sayısı değişmedi, kıyaslanacak bilgi üç katına çıktı.</p>
+  </div>
+  <p>Seçenek fazlalığı üzerine yapılmış 50 deneyi bir araya getiren bir analizde ortalama etki sıfıra yakın çıktı.<sup class="ref"><a href="#k16">16</a></sup> Yani çok seçenek her zaman bizi kilitlemiyor. 2015'te 99 gözlemi inceleyen bir başka analiz, sorunun ne zaman ortaya çıktığına baktı ve dört koşul buldu:<sup class="ref"><a href="#k17">17</a></sup></p>
+  <div class="grid">
+    <div class="cell"><b><span class="n">1</span>Seçenekler karmaşıksa</b>Kıyaslaması zor, her biri bir sürü bilgi taşıyan seçenekler.</div>
+    <div class="cell"><b><span class="n">2</span>Görev zorsa</b>Örneğin zaman baskısı altında karar vermen gerekiyorsa.</div>
+    <div class="cell"><b><span class="n">3</span>Ne istediğini bilmiyorsan</b>Tercihin henüz netleşmemişse.</div>
+    <div class="cell"><b><span class="n">4</span>Seçip sonuca ulaşman gerekiyorsa</b>AVM'de vitrinleri geziyorsun ama satın alma niyetin yok. Bu hâliyle 100 çeşit ayakkabı görmek eğlenceli olabilir, ne kadar çok çeşit varsa o kadar keyifli. Ancak yarın katılacağın bir düğün varsa ve bugün bir çift almak zorundaysan, aynı 100 ayakkabı arasında seçim yapmak birden büyük bir yük olur. Birini seçip diğerlerinden vazgeçmen gerekiyor.</div>
+  </div>
+  <p>Bu dört koşulu da taşıyan ve hepimizin yaşadığı bir örnek var; "Ne izlesek?" sorusuna cevap bulmaya çalışırken dizi ve film platformlarında gezinmek. Nielsen'in 2023 raporuna göre izleyiciler her oturumda ne izleyeceğine karar vermek için ortalama 10,5 dakika harcıyor. Beşte biri de bir şey bulamayıp izlemekten vazgeçiyor. Aynı dönemde raporun kapsadığı ülkelerde izlenebilir yapım sayısı 2,7 milyona ulaşmıştı.<sup class="ref"><a href="#k18">18</a></sup> Dört koşulun hepsi burada: Yapımları kıyaslamak zor, çoğu zaman ne istediğimizi bilmiyoruz, akşamın kısıtlı vakti ve "Bir saat sonra uyumam lazım" baskısı görevi zorlaştırıyor ve sonunda bir şey seçip başlamamız gerekiyor.</p>
+  <p>Kahveye dönelim. Kahvede ise menümüzde 138 milyon kombinasyon olmasına rağmen kimse kilitlenmiyor. <strong>Çünkü bir filtremiz var!</strong> Ne istediğimizi biliyoruz. Her gün içtiğimiz için tercihimiz oturmuş, kıyaslamak için birkaç özellik yetiyor. Uygulama da her ekranda tek bir soru soruyor. Dizide ise her yapım yeni ve tercihimiz ruh hâlimize göre değişiyor; yani filtrelerimiz çok daha zayıf, kıyasta kullanılacak bilgi çok daha fazla. Yazar Clay Shirky'nin deyişini ödünç alırsak; sorun bilginin fazlalığı değil, filtrenin yokluğu.<sup class="ref"><a href="#k15">15</a></sup></p>
+
+  <h2>Gidip gelmenin ortası: dört öneri</h2>
+  <p>Çıkan sonuç "daha az seçenek" değil. Seçeneklerin özgürlük olarak kalması için dikkatini nereye harcayacağını seçmen gerekiyor.</p>
+  <ol class="tips">
+    <li>
+      <h3>Ne zaman seçeceğine karar ver</h3>
+      <p>Schwartz'ın ilk önerisi bu.<sup class="ref"><a href="#k19">19</a></sup> Tekrar eden kararları alışkanlığa bırak. Günlük davranışlarımızın üçte biri ile yarısı zaten alışkanlık.<sup class="ref"><a href="#k20">20</a></sup> <span class="tag solid">Sağlam bulgu</span> Baristaya "Her zamankinden" demek, 15 kararı tek kelimeye paketlemek gibi.</p>
+      <p>Barack Obama da başkanlığı sırasında yalnızca gri ya da lacivert takım giydiğini söylemiş: "Ne yiyeceğime ya da ne giyeceğime karar vermek istemiyorum. Verecek çok başka kararım var."<sup class="ref"><a href="#k21">21</a></sup> <span class="tag anecdote">Anekdot</span></p>
+    </li>
+    <li>
+      <h3>Kendine varsayılan koy</h3>
+      <p>Dizi platformları varsayılanın gücünü iyi biliyor. Bölüm bitince bir sonraki kendiliğinden başlıyor. Kaç kez "bir bölüm daha" diye karar vermeden, sadece durdurmadığımız için izlemeye devam ettik? Aynı gücü kendi lehine kullanabilirsin. Gün içinde ilgini çeken bir film görünce izleme listene ekle. Akşam "Ne izlesek?" sorusunun cevabı için çok daha az seçenek içinden çok daha kolay bir karar verebilirsin. Hatta belki seçimin hazır olur. Listenin başındaki film.</p>
+    </li>
+    <li>
+      <h3>"Yeterince iyi" çıtanı önceden belirle</h3>
+      <p>Bir ürün ya da restoran seçerken önce üç ölçüt yaz, bunları karşılayan ilk seçenekte dur. Yetinenler (kanaatkârlar) gibi.</p>
+    </li>
+    <li>
+      <h3>Bilgiyi süz</h3>
+      <p>Önemli bir kararda kıyaslayacağın özellikleri ikiye üçe indir ve seçenekleri aynı ölçütlerle yan yana koy. Kendi filtreni kendin kur.</p>
+    </li>
+  </ol>
+
+  <h2>Kapanış</h2>
+  <p>Seçenek ne tamamen özgürlük ne tamamen yük. Ne istediğini bildiğinde özgürlük, her seferinde en iyisini bulmak için bütün bilgiyi tartmaya çalıştığında yük oluyor.</p>
+  <p>Yarın sabah kahve için muhtemelen tek bir karar vereceksin: "Her zamankinden." Geri kalanları çoktan vermiş olacaksın.</p>
+
+  <aside class="callout solo">
+    <a class="cta" href="../index.html">Sen kaç karar vereceksin? Dene →</a>
+  </aside>
+
+  <p class="legend"><span>Etiketler:</span><span class="tag debated">Tartışmalı</span><span class="tag solid">Sağlam bulgu</span><span class="tag anecdote">Anekdot</span></p>
+
+  <section class="sources" aria-labelledby="kaynaklar">
+    <h2 id="kaynaklar">Kaynaklar</h2>
+    <ol>
+      <li id="k1">didtheresearch, "Do we really make 35,000 decisions a day?" (Substack). <a href="https://didtheresearch.substack.com/p/do-we-really-make-35000-decisions">Yazı</a></li>
+      <li id="k2">Wansink, B. ve Sobal, J. (2007). "Mindless eating: The 200 daily food decisions we overlook." <i>Environment and Behavior</i>. <a href="https://journals.sagepub.com/doi/10.1177/0013916506295573">Makale</a> · <a href="https://www.bps.org.uk/research-digest/mindless-eating-food-decisions-we-dont-realise-were-making">BPS özeti</a></li>
+      <li id="k3">BuzzFeed News (2018), Cornell'in Wansink incelemesi ve istifası. <a href="https://www.buzzfeednews.com/article/stephaniemlee/brian-wansink-retired-cornell">Haber</a></li>
+      <li id="k4">Kellogg Insight, seçenek fazlalığını öngören etkenler üzerine (McShane ve Böckenholt). <a href="https://insight.kellogg.northwestern.edu/article/what-predicts-consumer-choice-overload">Yazı</a></li>
+      <li id="k5">PBS NewsHour, Barry Schwartz ile söyleşi: "Paradox of Choice." <a href="https://www.pbs.org/newshour/show/paradox-of-choice">Söyleşi</a></li>
+      <li id="k6">Schwartz, B. <i>Bolluk Paradoksu: Çok Seçenek Özgürlük mü, Mutsuzluk mu?</i> Mediacat Yayınları, Önsöz. (Özgün baskı: <i>The Paradox of Choice: Why More Is Less</i>, 2004.) <a href="https://www.turkkitap.de/catalog/product/view/sku/10105">Türkçe baskı</a></li>
+      <li id="k7">Simon, H. A. (1956). "Rational choice and the structure of the environment." <i>Psychological Review</i>. Özet: <a href="https://en.wikipedia.org/wiki/Maximization_(psychology)">"Maximization (psychology)" (Wikipedia)</a></li>
+      <li id="k8">Schwartz, B. ve ark. (2002). "Maximizing versus satisficing: Happiness is a matter of choice." <i>Journal of Personality and Social Psychology</i>. <a href="https://works.swarthmore.edu/fac-psychology/101">Kayıt</a></li>
+      <li id="k9">Iyengar, S. S., Wells, R. E. ve Schwartz, B. (2006). "Doing better but feeling worse." <i>Psychological Science</i>. <a href="https://works.swarthmore.edu/fac-psychology/104/">Kayıt</a></li>
+      <li id="k10">Nenkov, G. Y. ve ark. (2008) ve Diab, D. L., Gillespie, M. A. ve Highhouse, S. (2008). <i>Judgment and Decision Making</i>, 3(5). <a href="https://www.cambridge.org/core/services/aop-cambridge-core/content/view/73A1FB6A9BCBC4D0DF2ADA87FBFBD6EC/S1930297500000383a.pdf/are-maximizers-really-unhappy-the-measurement-of-maximizing-tendency.pdf">Diab ve ark. (PDF)</a> · <a href="https://en.wikipedia.org/wiki/Maximization_(psychology)">Genel özet (Wikipedia)</a></li>
+      <li id="k11">Vohs, K. D. ve ark. (2008). "Making choices impairs subsequent self-control." <i>Journal of Personality and Social Psychology</i>. <a href="https://www.apa.org/news/press/releases/2008/05/many-choices">APA özeti</a></li>
+      <li id="k12">Levav, J., Heitmann, M., Herrmann, A. ve Iyengar, S. S. (2010). "Order in product customization decisions: Evidence from field experiments." <i>Journal of Political Economy</i>. <a href="https://ideas.repec.org/a/ucp/jpolec/v118y2010i2p274-299.html">Özet</a> · seçenek sayıları: <a href="https://sloanreview.mit.edu/?p=11243">MIT Sloan Management Review</a></li>
+      <li id="k13">Hagger, M. S. ve ark. (2016). "A multilab preregistered replication of the ego-depletion effect." <i>Perspectives on Psychological Science</i>. <a href="https://mro.massey.ac.nz/items/4a1951d7-6022-4d0e-bbb6-fc336ecd4792/full">Kayıt</a></li>
+      <li id="k14">Vohs, K. D. ve ark. (2021). "A multisite preregistered paradigmatic test of the ego-depletion effect." <i>Psychological Science</i>. <a href="https://digitalcommons.unf.edu/unf_faculty_publications/1132">Kayıt</a></li>
+      <li id="k15">"Information overload" (Wikipedia): terimin tarihi, Bertram Gross, Alvin Toffler ve Clay Shirky'nin "filtre hatası" yorumu. <a href="https://en.wikipedia.org/wiki/Information_overload">Madde</a></li>
+      <li id="k16">Scheibehenne, B., Greifeneder, R. ve Todd, P. M. (2010). "Can there ever be too many options?" <i>Journal of Consumer Research</i>. <a href="https://ideas.repec.org/a/oup/jconrs/v37y2010i3p409-425.html">Özet</a></li>
+      <li id="k17">Chernev, A., Böckenholt, U. ve Goodman, J. (2015). "Choice overload: A conceptual review and meta-analysis." <i>Journal of Consumer Psychology</i>. <a href="https://www.kellogg.northwestern.edu/faculty/research/detail/2015/when-product-assortment-leads-to-choice-overload-a-conceptual">Özet</a></li>
+      <li id="k18">Nielsen (2023). <i>State of Play</i> raporu, basın bülteni (28 Ağustos 2023). <a href="https://www.nielsen.com/news-center/2023/nielsens-state-of-play-report-delivers-new-insights-as-streamings-next-evolution-brings-content-discovery-challenges-for-viewers">Bülten</a></li>
+      <li id="k19">Kitabın önerileri için: Metapsychology Online, <i>The Paradox of Choice</i> incelemesi. <a href="https://metapsychology.net/?p=3135">İnceleme</a></li>
+      <li id="k20">Wood, W., Quinn, J. M. ve Kashy, D. A. (2002). "Habits in everyday life." <i>Journal of Personality and Social Psychology</i>. <a href="https://dornsife.usc.edu/wendy-wood/wp-content/uploads/sites/183/2023/10/Wood.Quinn_.Kashy_.2002_Habits_in_everyday_life.pdf">PDF</a></li>
+      <li id="k21">Lewis, M. (2012). "Obama's Way." <i>Vanity Fair</i>, Ekim 2012. Alıntı: <a href="https://kottke.org/12/09/michael-lewis-profiles-president-obama">kottke.org</a></li>
+    </ol>
+    <p class="note">Kaynaklar Kasım 2026 başında kontrol edildi.</p>
+  </section>
+</article>
+</main>
+
+<footer>
+  <span>kahvelerce.com · Çerez yok · Takip yok</span>
+  <a href="../index.html">Uygulamaya dön</a>
+</footer>
+</body>
+</html>
