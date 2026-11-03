@@ -1,0 +1,617 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>138 milyon kahve · kahvelerce</title>
+<meta name="description" content="Tek bir kahve menüsünden 138.269.568 farklı kahve çıkıyor. İnanmadın mı? Rastgele bir tane çek, numarasına bak, hesabı kendin gör.">
+<meta name="theme-color" content="#F5EFE6">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cg transform='rotate(30 16 16)'%3E%3Cellipse cx='16' cy='16' rx='10' ry='13' fill='%238E5D37'/%3E%3Cpath d='M16 5 C11 12 21 20 16 27' stroke='%23F5EFE6' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/g%3E%3C/svg%3E">
+<style>
+  :root {
+    color-scheme: light;
+    --roast-1: #A3AE71; --roast-2: #C9B877; --roast-3: #BE8B4F;
+    --roast-4: #8E5D37; --roast-5: #5C3A22; --roast-6: #2F1E14;
+    --green-deep: #5F6B3A;
+    --rust: #A6432A; --rust-deep: #86331F; --rust-tint: #F4DED4;
+    --bg: #F5EFE6; --paper: #FFFDF9; --ink: #2B1B12; --ink-soft: #6B5546; --line: #E4D7C5;
+    --roast-gradient: linear-gradient(90deg, var(--roast-1), var(--roast-2) 22%, var(--roast-3) 45%, var(--roast-4) 66%, var(--roast-5) 84%, var(--roast-6));
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: var(--sans); font-size: 17px; line-height: 1.55;
+  }
+  h1, h2, h3 { font-family: var(--serif); font-weight: 700; line-height: 1.12; letter-spacing: -0.01em; }
+  a { color: var(--rust); text-underline-offset: 3px; }
+  [hidden] { display: none !important; }
+  .num { font-variant-numeric: tabular-nums; }
+
+  /* Üst bar */
+  .top { position: sticky; top: 0; z-index: 5; background: rgba(245, 239, 230, 0.94);
+    -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); padding-top: env(safe-area-inset-top); }
+  .top-inner { max-width: 640px; margin: 0 auto; padding: 12px 16px 10px;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .brand { font-family: var(--serif); font-weight: 700; font-size: 1.15rem; color: var(--ink); text-decoration: none; }
+  .brand span { color: var(--ink-soft); font-weight: 400; }
+  .top-link { font-size: 0.95rem; color: var(--ink-soft); text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
+  .top-link:hover { color: var(--ink); }
+  .bar { height: 6px; background: var(--roast-gradient); }
+
+  .wrap { max-width: 640px; margin: 0 auto; padding: 0 16px calc(48px + env(safe-area-inset-bottom)); }
+  section { margin-top: 44px; }
+  .eyebrow { font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--green-deep); font-weight: 700; margin: 0; }
+  h2 { font-size: clamp(1.6rem, 6vw, 2.1rem); margin: 0.2em 0 0.4em; }
+  p { margin: 0 0 1em; }
+  .soft { color: var(--ink-soft); }
+
+  /* Kahraman */
+  .hero { margin-top: 28px; }
+  .hero h1 { margin: 0.2em 0 0.25em; font-size: clamp(1.9rem, 8vw, 2.6rem); }
+  .big {
+    display: block; font-size: clamp(2.9rem, 15.5vw, 5rem); line-height: 1; color: var(--rust);
+    letter-spacing: -0.02em; margin-bottom: 0.12em;
+  }
+  .lede { font-size: 1.12rem; max-width: 34ch; }
+
+  /* Butonlar */
+  .cta {
+    display: inline-flex; justify-content: center; align-items: center; gap: 8px;
+    min-height: 54px; padding: 14px 26px; border-radius: 999px;
+    background: var(--rust); color: #fff; border: 0; font: inherit; font-weight: 700;
+    text-decoration: none; cursor: pointer; box-shadow: 0 2px 0 var(--rust-deep);
+    transition: background 0.15s, transform 0.1s; -webkit-tap-highlight-color: transparent;
+  }
+  .cta:hover { background: var(--rust-deep); }
+  .cta:active { transform: translateY(1px); box-shadow: none; }
+  .cta.wide { width: 100%; font-size: 1.1rem; }
+  .ghost {
+    display: inline-flex; justify-content: center; align-items: center;
+    min-height: 46px; padding: 10px 18px; border-radius: 999px;
+    background: var(--paper); color: var(--ink); border: 1.5px solid var(--line);
+    font: inherit; font-size: 0.95rem; font-weight: 600; cursor: pointer;
+  }
+  .ghost:hover { border-color: var(--roast-3); }
+  .cta:focus-visible, .ghost:focus-visible, a:focus-visible, input:focus-visible {
+    outline: 3px solid var(--rust); outline-offset: 3px;
+  }
+
+  /* Fiş */
+  .slip {
+    position: relative; margin: 18px 0 0; background: var(--paper);
+    border: 1px solid var(--line); border-radius: 6px 6px 0 0; padding: 18px 18px 22px;
+    box-shadow: 0 2px 0 rgba(43, 27, 18, 0.05);
+  }
+  .slip::after {
+    content: ""; position: absolute; left: -1px; right: -1px; bottom: -10px; height: 10px;
+    background:
+      linear-gradient(-45deg, transparent 7px, var(--paper) 0) 0 0 / 14px 10px repeat-x,
+      linear-gradient(45deg, transparent 7px, var(--paper) 0) 0 0 / 14px 10px repeat-x;
+    filter: drop-shadow(0 1px 0 var(--line));
+  }
+  .slip-head {
+    display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap;
+    font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.08em; color: var(--ink-soft);
+    border-bottom: 1.5px dashed var(--line); padding-bottom: 10px;
+  }
+  .slip-no { color: var(--rust); font-weight: 700; letter-spacing: 0.02em; font-size: 0.95rem; }
+  .slip-of { font-family: var(--mono); font-size: 0.8rem; color: var(--ink-soft); margin: 10px 0 0; }
+  .slip h3 { font-size: clamp(1.3rem, 5.4vw, 1.65rem); margin: 0.35em 0 0.2em; }
+  .slip-where { color: var(--green-deep); font-weight: 600; margin: 0 0 12px; }
+  .lines { list-style: none; padding: 0; margin: 0; border-top: 1.5px dashed var(--line); }
+  .lines li {
+    display: flex; justify-content: space-between; gap: 12px; padding: 7px 0;
+    border-bottom: 1px dotted var(--line); font-size: 0.93rem;
+  }
+  .lines .k { color: var(--ink-soft); }
+  .lines .v { font-weight: 600; text-align: right; }
+  .slip-quip { font-style: italic; color: var(--ink-soft); margin: 14px 0 0; }
+  .slip-foot { font-family: var(--mono); font-size: 0.78rem; color: var(--ink-soft); margin: 12px 0 0; text-align: center; }
+  .slip.flash { animation: flash 0.45s ease; }
+  @keyframes flash { 0% { transform: translateY(6px); opacity: 0.4; } 100% { transform: none; opacity: 1; } }
+
+  .tally {
+    margin: 26px 0 0; padding: 12px 14px; border-radius: 12px; background: var(--rust-tint);
+    font-size: 0.93rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; text-align: center;
+  }
+  .tally b { display: block; font-size: 1.05rem; color: var(--rust-deep); }
+  .tally span { color: var(--ink-soft); font-size: 0.8rem; }
+  .tally-note { font-size: 0.88rem; color: var(--ink-soft); margin: 10px 0 0; }
+
+  .lookup { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--line); }
+  .lookup label { display: block; font-weight: 700; margin-bottom: 8px; }
+  .lookup-row { display: flex; gap: 8px; }
+  .lookup input {
+    flex: 1; min-width: 0; min-height: 46px; padding: 10px 14px; border-radius: 12px;
+    border: 1.5px solid var(--line); background: var(--paper); font: inherit; color: var(--ink);
+  }
+  .lookup-quick { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+  .err { color: var(--rust-deep); font-size: 0.9rem; margin: 8px 0 0; min-height: 1.2em; }
+
+  /* Karşılaştırmalar */
+  .cards { display: grid; gap: 12px; }
+  .card { background: var(--paper); border: 1px solid var(--line); border-radius: 14px; padding: 16px; }
+  .card h3 { font-size: 1.15rem; margin: 0 0 6px; display: flex; align-items: center; gap: 10px; }
+  .card h3 svg { flex: none; }
+  .card p { margin: 0; font-size: 0.97rem; }
+  .card b { color: var(--rust); }
+  @media (min-width: 600px) { .cards { grid-template-columns: 1fr 1fr; } }
+
+  /* Hesap */
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 4px 0 14px; }
+  .chip { background: var(--paper); border: 1px solid var(--line); border-radius: 999px; padding: 4px 10px; font-size: 0.88rem; white-space: nowrap; }
+  .chip b { color: var(--rust); }
+  .times { color: var(--ink-soft); font-size: 0.85rem; }
+  .eq { font-weight: 700; color: var(--rust); }
+  table { width: 100%; border-collapse: collapse; margin: 6px 0 16px; font-size: 0.97rem; }
+  th, td { padding: 9px 4px; border-bottom: 1px solid var(--line); text-align: left; }
+  td.r, th.r { text-align: right; font-variant-numeric: tabular-nums; }
+  tr.total td { font-weight: 700; border-bottom: 0; border-top: 2px solid var(--ink); }
+  .share { display: inline-block; height: 8px; border-radius: 4px; background: var(--roast-4); vertical-align: middle; margin-left: 6px; }
+  .note {
+    background: var(--paper); border-left: 3px solid var(--rust); border-radius: 0 12px 12px 0;
+    padding: 12px 14px; font-size: 0.95rem;
+  }
+  .note p:last-child { margin: 0; }
+  .note .note-title { font-size: 0.78rem; letter-spacing: 0.14em; font-weight: 700; color: var(--rust); margin: 0 0 6px; }
+
+  /* Kapanış */
+  .callout { text-align: center; background: var(--paper); border: 1px solid var(--line); border-radius: 18px; padding: 24px 18px; }
+  .callout .q { font-family: var(--serif); font-size: 1.4rem; font-weight: 700; margin: 0 0 14px; line-height: 1.2; }
+  .callout .more { display: inline-block; margin-top: 14px; font-size: 0.95rem; }
+
+  .sources { margin-top: 40px; font-size: 0.82rem; color: var(--ink-soft); border-top: 1px solid var(--line); padding-top: 14px; }
+  .sources ol { padding-left: 1.2em; margin: 6px 0 0; }
+  .sources a { color: var(--ink-soft); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .slip.flash { animation: none; }
+    .cta { transition: none; }
+  }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-inner">
+    <a class="brand" href="./">kahvelerce<span>.com</span></a>
+    <a class="top-link" href="./">← Uygulamaya dön</a>
+  </div>
+  <div class="bar" aria-hidden="true"></div>
+</header>
+
+<main class="wrap">
+
+  <section class="hero" aria-labelledby="h-hero">
+    <p class="eyebrow">Hesap kitap köşesi</p>
+    <h1 id="h-hero"><span class="big num" data-fill="total">138.269.568</span>farklı kahve.</h1>
+    <p class="lede">Hepsi tek bir menüden, bizim menüden. 138 milyondan fazla kombinasyon. İnanması zor, biliyoruz! O yüzden hesabını da anlattık!</p>
+  </section>
+
+  <section aria-labelledby="h-gen">
+    <p class="eyebrow">Kendin dene</p>
+    <h2 id="h-gen">Bana bir kahve yap</h2>
+    <p>Butona her bastığında <span class="num" data-fill="total">138.269.568</span> kahveden biri çekiliyor, hepsi eşit şansla. Her kahvenin bir sıra numarası var, yani hiçbiri uydurma değil.</p>
+    <button type="button" class="cta wide" id="roll">Rastgele bir kahve çek</button>
+
+    <article class="slip" id="slip" hidden aria-live="polite">
+      <div class="slip-head"><span>SİPARİŞ FİŞİ</span><span class="slip-no num" id="slipNo">No. 1</span></div>
+      <p class="slip-of num" id="slipOf"></p>
+      <h3 id="slipName"></h3>
+      <p class="slip-where" id="slipWhere"></p>
+      <ul class="lines" id="slipLines"></ul>
+      <p class="slip-quip" id="slipQuip"></p>
+      <p class="slip-foot num" id="slipFoot"></p>
+    </article>
+
+    <div class="tally" id="tally" hidden>
+      <div><b class="num" id="tSeen">0</b><span>gördüğün</span></div>
+      <div><b class="num" id="tLeft">0</b><span>görmediğin</span></div>
+      <div><b class="num" id="tPct">%0</b><span>ilerleme</span></div>
+    </div>
+    <p class="tally-note" id="tallyNote" hidden>Saniyede bir bassan hepsini yaklaşık <b class="num" data-fill="secYears">4,4</b> yılda görürsün. Uyumadan, yemeden ve en acısı kahve içmeden.</p>
+
+    <div class="lookup" id="lookup">
+      <label for="lookupIn">Numarasıyla çağır</label>
+      <div class="lookup-row">
+        <input id="lookupIn" inputmode="numeric" enterkeyhint="go" autocomplete="off" placeholder="1 – 138.269.568">
+        <button type="button" class="ghost" id="lookupGo">Getir</button>
+      </div>
+      <div class="lookup-quick">
+        <button type="button" class="ghost" data-jump="first">İlk kahve</button>
+        <button type="button" class="ghost" data-jump="last">Son kahve</button>
+        <button type="button" class="ghost" data-jump="mid">Tam ortadaki</button>
+      </div>
+      <p class="err" id="lookupErr" role="alert"></p>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-scale">
+    <p class="eyebrow">Biraz ölçek verelim</p>
+    <h2 id="h-scale">138 milyon ne kadar büyük?</h2>
+    <div class="cards">
+      <div class="card">
+        <h3><svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><rect x="3" y="5" width="20" height="18" rx="3" fill="none" stroke="#2B1B12" stroke-width="2"/><path d="M3 10h20M8 3v4M18 3v4" stroke="#2B1B12" stroke-width="2" stroke-linecap="round"/><circle cx="13" cy="16" r="2.4" fill="#A6432A"/></svg>Günde bir kahve</h3>
+        <p>Her gün farklı bir kahve içsen hepsini <b class="num" data-fill="dayYears">yaklaşık 378.600 yılda</b> bitirirsin. Bilinen en eski Homo sapiens fosilleri yaklaşık 300.000 yıllık.<sup>1</sup> Yani ilk insanlar o gün başlasaydı bile önlerinde hâlâ <span class="num" data-fill="dayLeft">79.000 yıllık</span> kahve olurdu.</p>
+      </div>
+      <div class="card">
+        <h3><svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><circle cx="8" cy="8" r="3.2" fill="none" stroke="#2B1B12" stroke-width="2"/><circle cx="18" cy="8" r="3.2" fill="none" stroke="#2B1B12" stroke-width="2"/><path d="M2.5 21c0-4 2.5-6.5 5.5-6.5s5.5 2.5 5.5 6.5M12.5 21c0-4 2.5-6.5 5.5-6.5s5.5 2.5 5.5 6.5" fill="none" stroke="#2B1B12" stroke-width="2" stroke-linecap="round"/></svg>Bütün Türkiye kahveye</h3>
+        <p>Türkiye'de <span class="num">86.092.168</span> kişi yaşıyor.<sup>2</sup> Herkes farklı bir kahve söylese bile <b class="num" data-fill="trLeft">52.177.400</b> kahve hiç sipariş edilmeden kalır. Bebekler de dahil, kimseyi ayırmadık.</p>
+      </div>
+      <div class="card">
+        <h3><svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><circle cx="13" cy="13" r="10" fill="none" stroke="#2B1B12" stroke-width="2"/><path d="M13 7v6l4 3" stroke="#A6432A" stroke-width="2.2" stroke-linecap="round" fill="none"/></svg>Mola vermeyen barista</h3>
+        <p>Dakikada bir kahve yapan ve hiç mola vermeyen bir barista hepsini <b class="num" data-fill="minYears">yaklaşık 263 yılda</b> bitirir. Son siparişi bugün teslim ediyorsa tezgâha <span class="num" data-fill="startYear">1763</span> civarında geçmiş olmalı. Tatil hakkını hiç sormamış.</p>
+      </div>
+      <div class="card">
+        <h3><svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><path d="M3 18l7-4 4 3 9-9" fill="none" stroke="#2B1B12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 8h6v6" fill="none" stroke="#A6432A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Tarif kâğıtları</h3>
+        <p>Her tarifi bir A4 kâğıda yazıp üst üste koysan yığın <b class="num" data-fill="stackKm">yaklaşık 13,8 km</b> yükselir. Yolcu uçakları genelde 9–12 km'de uçar. Pilot sana el sallayabilir, sen de ona tarifi okursun.</p>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-math">
+    <p class="eyebrow">Hile yok, çarpma var</p>
+    <h2 id="h-math">Hesap nasıl çıkıyor?</h2>
+    <p>Her soru, önündeki seçenek sayısı kadar kahveyi çoğaltır. Mesela şu rotayı düşün. <b>Evde, sıcak, filtre, Arabica, sütsüz.</b> Bu rotada sorulan diğer sorular ve seçenek sayıları şöyle:</p>
+    <div class="chips" id="exChips"></div>
+    <p>Sadece bu tek rotada <b class="num" data-fill="exTotal">138.240</b> farklı kahve var.</p>
+    <p>Ama bazı cevaplar sonraki soruları değiştiriyor. Türk kahvesinde süt sorulmuyor, Arabica dışında menşei sorulmuyor, kafedeysen kafe türü ve masa da soruluyor. Bu yüzden uygulamada <b class="num" data-fill="routes">135</b> ayrı rota var ve her birinin kendi çarpımı var. Hepsini toplayınca şu çıkıyor:</p>
+    <table>
+      <thead><tr><th>Kahveyi nerede içiyorsun?</th><th class="r">Kombinasyon</th></tr></thead>
+      <tbody id="branchBody"></tbody>
+    </table>
+    <p>Kafe dalının bu kadar şişkin olmasının sebebi iki soru. Kafe türü (4 seçenek) ve masa (4 seçenek) o daldaki her şeyi 16 ile çarpıyor. Yani 138 milyonun büyük kısmını aslında "cam kenarı mı, priz yanı mı?" ikilemi yaratıyor.</p>
+    <div class="note">
+      <p class="note-title">REALİTE</p>
+      <p>Bu sayı farklı <i>karar kombinasyonlarını</i> sayıyor. Cam kenarında içilen latte ile köşe masada içilen aynı latte iki ayrı kombinasyon. Fincandaki kahve aynı olabilir ama kararlar farklı. Bu sitenin derdi de zaten kararlar.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="callout">
+      <p class="q">Sıra sende. 138 milyondan hangisi seninki?</p>
+      <a class="cta" href="./">Kendi kahveni seç →</a><br>
+      <a class="more" href="blog/gunluk-kararlar.html">Bu kadar seçenek yorar mı? Yazıyı oku</a>
+    </div>
+  </section>
+
+  <footer class="sources">
+    <b>Kaynaklar</b>
+    <ol>
+      <li><a href="https://www.mpg.de/11322481/" rel="noopener">Max Planck Society (2017). Jebel Irhoud, Fas'ta bulunan en eski Homo sapiens fosilleri, yaklaşık 300 bin yıl.</a></li>
+      <li><a href="https://data.tuik.gov.tr/Bulten/Index?p=Adrese-Dayali-Nufus-Kayit-Sistemi-Sonuclari-2025-53899" rel="noopener">TÜİK, Adrese Dayalı Nüfus Kayıt Sistemi Sonuçları 2025 (31 Aralık 2025 itibarıyla).</a></li>
+    </ol>
+    <p style="margin:8px 0 0">Diğer hesaplar uygulamanın kendi karar ağacından, bu sayfa açılırken yeniden yapılıyor. A4 kâğıdın kalınlığı yaklaşık 0,1 mm alındı.</p>
+  </footer>
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ---------- Karar ağacı (index.html ile aynı sorular ve koşullar) ---------- */
+  var CUPS = { fincan: 'Fincan', kupa: 'Kupa', cam: 'Cam bardak', karton: 'Karton bardak', termos: 'Kendi termosum' };
+  var METHODS = [
+    { v: 'espresso', t: 'Espresso' }, { v: 'filtre', t: 'Filtre (V60)' }, { v: 'french', t: 'French press' },
+    { v: 'turk', t: 'Türk kahvesi' }, { v: 'moka', t: 'Moka pot' }, { v: 'coldbrew', t: 'Cold brew' }
+  ];
+
+  var QUESTIONS = [
+    { id: 'place', label: 'Mekân', options: [{ v: 'ev', t: 'Evde' }, { v: 'kafe', t: 'Kafede' }, { v: 'yol', t: 'Yolda' }] },
+    { id: 'cafeType', label: 'Kafe', when: function (s) { return s.place === 'kafe'; },
+      options: [{ v: 'mahalle', t: 'Mahalle kahvecisi' }, { v: 'zincir', t: 'Zincir kafe' }, { v: 'nitelikli', t: 'Nitelikli kahveci' }, { v: 'kitap', t: 'Kitap kafe' }] },
+    { id: 'seat', label: 'Masa', when: function (s) { return s.place === 'kafe'; },
+      options: [{ v: 'cam', t: 'Cam kenarı' }, { v: 'priz', t: 'Prizin yanı' }, { v: 'kose', t: 'Köşe masa' }, { v: 'disari', t: 'Dışarısı' }] },
+    { id: 'temp', label: 'Sıcaklık', options: [{ v: 'sicak', t: 'Sıcak' }, { v: 'soguk', t: 'Soğuk' }] },
+    { id: 'method', label: 'Demleme', options: function (s) {
+        return s.temp === 'soguk'
+          ? METHODS.filter(function (o) { return ['espresso', 'filtre', 'coldbrew'].indexOf(o.v) > -1; })
+          : METHODS.filter(function (o) { return o.v !== 'coldbrew'; });
+      } },
+    { id: 'turkBrew', label: 'Pişirme', when: function (s) { return s.method === 'turk'; },
+      options: [{ v: 'ocak', t: 'Ocakta' }, { v: 'kum', t: 'Kumda' }, { v: 'makine', t: 'Makinede' }] },
+    { id: 'decaf', label: 'Kafein', options: [{ v: 'kafeinli', t: 'Kafeinli' }, { v: 'kafeinsiz', t: 'Kafeinsiz' }] },
+    { id: 'bean', label: 'Çekirdek', options: [{ v: 'arabica', t: 'Arabica' }, { v: 'robusta', t: 'Robusta' }, { v: 'harman', t: 'Harman' }] },
+    { id: 'origin', label: 'Menşei', when: function (s) { return s.bean === 'arabica'; },
+      options: [{ v: 'etiyopya', t: 'Etiyopya' }, { v: 'kolombiya', t: 'Kolombiya' }, { v: 'brezilya', t: 'Brezilya' }, { v: 'kenya', t: 'Kenya' }, { v: 'guatemala', t: 'Guatemala' }] },
+    { id: 'process', label: 'İşleme', when: function (s) { return s.bean === 'arabica'; },
+      options: [{ v: 'yikanmis', t: 'Yıkanmış' }, { v: 'natural', t: 'Natural' }, { v: 'honey', t: 'Honey' }] },
+    { id: 'roast', label: 'Kavurma', options: [{ v: 'acik', t: 'Açık' }, { v: 'orta', t: 'Orta' }, { v: 'koyu', t: 'Koyu' }] },
+    { id: 'grind', label: 'Öğütme', when: function (s) { return s.place === 'ev'; },
+      options: [{ v: 'taze', t: 'Taze öğütülmüş' }, { v: 'hazir', t: 'Hazır öğütülmüş' }] },
+    { id: 'dose', label: 'Doz', when: function (s) { return s.method === 'espresso'; },
+      options: [{ v: 'tek', t: 'Tek' }, { v: 'cift', t: 'Çift (doppio)' }] },
+    { id: 'milk', label: 'Süt', when: function (s) { return s.method !== 'turk'; },
+      options: [{ v: 'yok', t: 'Yok' }, { v: 'var', t: 'Var' }] },
+    { id: 'milkType', label: 'Süt türü', when: function (s) { return s.milk === 'var'; },
+      options: [{ v: 'inek', t: 'İnek sütü' }, { v: 'yulaf', t: 'Yulaf' }, { v: 'badem', t: 'Badem' }, { v: 'soya', t: 'Soya' }, { v: 'laktozsuz', t: 'Laktozsuz' }] },
+    { id: 'foam', label: 'Köpük', when: function (s) { return (s.milk === 'var' && s.temp === 'sicak') || s.method === 'turk'; },
+      options: function (s) {
+        return s.method === 'turk'
+          ? [{ v: 'bol', t: 'Bol köpüklü' }, { v: 'az', t: 'Az köpüklü' }, { v: 'farketmez', t: 'Fark etmez' }]
+          : [{ v: 'yok', t: 'Yok' }, { v: 'az', t: 'Az' }, { v: 'bol', t: 'Bol' }];
+      } },
+    { id: 'syrup', label: 'Aroma', when: function (s) { return s.method !== 'turk'; },
+      options: [{ v: 'yok', t: 'Yok, sade' }, { v: 'vanilya', t: 'Vanilya' }, { v: 'karamel', t: 'Karamel' }, { v: 'findik', t: 'Fındık' }] },
+    { id: 'sugar', label: 'Şeker', options: function (s) {
+        return s.method === 'turk'
+          ? [{ v: 'sade', t: 'Sade' }, { v: 'az', t: 'Az şekerli' }, { v: 'orta', t: 'Orta' }, { v: 'sekerli', t: 'Şekerli' }]
+          : [{ v: 'yok', t: 'Şekersiz' }, { v: 'az', t: 'Az' }, { v: 'orta', t: 'Orta' }, { v: 'bol', t: 'Bol' }];
+      } },
+    { id: 'size', label: 'Boy', when: function (s) { return (s.method !== 'espresso' && s.method !== 'turk') || (s.method === 'espresso' && s.milk === 'var'); },
+      options: [{ v: 'kucuk', t: 'Küçük' }, { v: 'orta', t: 'Orta' }, { v: 'buyuk', t: 'Büyük' }] },
+    { id: 'cup', label: 'Bardak', options: function (s) {
+        var v = s.place === 'ev' ? ['fincan', 'kupa', 'cam', 'termos']
+              : s.place === 'kafe' ? ['fincan', 'cam', 'karton', 'termos']
+              : ['karton', 'termos'];
+        if (s.temp === 'soguk') v = v.filter(function (x) { return x !== 'fincan' && x !== 'kupa'; });
+        if (s.method === 'turk') v = s.place === 'yol' ? ['karton', 'termos'] : ['fincan'];
+        return v.map(function (x) { return { v: x, t: CUPS[x] }; });
+      } },
+    { id: 'side', label: 'Yanında', options: [{ v: 'su', t: 'Su' }, { v: 'lokum', t: 'Lokum' }, { v: 'tatli', t: 'Tatlı bir şey' }, { v: 'yok', t: 'Hiçbir şey' }] }
+  ];
+  var COND_KEYS = ['place', 'temp', 'method', 'bean', 'milk'];
+
+  function val(x, s) { return typeof x === 'function' ? x(s) : x; }
+  function optionsFor(q, s) { return val(q.options, s); }
+  function isAsked(q, s) { return (!q.when || q.when(s)) && optionsFor(q, s).length >= 2; }
+
+  /* Her düğümün altındaki kombinasyon sayısı (bellekli) */
+  var memo = {};
+  function count(i, s) {
+    if (i >= QUESTIONS.length) return 1;
+    var key = i + '|' + COND_KEYS.map(function (k) { return s[k] || ''; }).join(',');
+    if (memo[key] !== undefined) return memo[key];
+    var q = QUESTIONS[i], r;
+    if (!isAsked(q, s)) r = count(i + 1, s);
+    else if (COND_KEYS.indexOf(q.id) > -1) {
+      r = 0;
+      optionsFor(q, s).forEach(function (o) { var nx = Object.assign({}, s); nx[q.id] = o.v; r += count(i + 1, nx); });
+    } else r = optionsFor(q, s).length * count(i + 1, s);
+    memo[key] = r;
+    return r;
+  }
+
+  /* Rota sayısı: koşulu değiştiren cevapların farklı birleşimleri */
+  function routes(i, s) {
+    if (i >= QUESTIONS.length) return 1;
+    var q = QUESTIONS[i];
+    if (!isAsked(q, s) || COND_KEYS.indexOf(q.id) < 0) return routes(i + 1, s);
+    return optionsFor(q, s).reduce(function (n, o) { var nx = Object.assign({}, s); nx[q.id] = o.v; return n + routes(i + 1, nx); }, 0);
+  }
+
+  /* k numaralı kahveyi bul (0 tabanlı). Her numara tek bir kahveye karşılık gelir. */
+  function unrank(k) {
+    var a = {}, steps = [];
+    for (var i = 0; i < QUESTIONS.length; i++) {
+      var q = QUESTIONS[i];
+      if (!isAsked(q, a)) continue;
+      var opts = optionsFor(q, a), pick;
+      if (COND_KEYS.indexOf(q.id) > -1) {
+        for (var j = 0; j < opts.length; j++) {
+          var nx = Object.assign({}, a); nx[q.id] = opts[j].v;
+          var sub = count(i + 1, nx);
+          if (k < sub) { pick = opts[j]; break; }
+          k -= sub;
+        }
+      } else {
+        var per = count(i + 1, a);
+        pick = opts[Math.floor(k / per)];
+        k = k % per;
+      }
+      a[q.id] = pick.v;
+      steps.push({ q: q, o: pick });
+    }
+    return { a: a, steps: steps };
+  }
+
+  /* ---------- Kahvenin adı (uygulamadakiyle aynı mantık) ---------- */
+  var MILK_ADJ = { inek: 'sütlü', yulaf: 'yulaf sütlü', badem: 'badem sütlü', soya: 'soya sütlü', laktozsuz: 'laktozsuz sütlü' };
+  var SYRUP_ADJ = { vanilya: 'vanilyalı', karamel: 'karamelli', findik: 'fındıklı' };
+  var ROAST_ADJ = { acik: 'açık kavrulmuş', orta: 'orta kavrulmuş', koyu: 'koyu kavrulmuş' };
+  var ORIGIN = { etiyopya: 'Etiyopya', kolombiya: 'Kolombiya', brezilya: 'Brezilya', kenya: 'Kenya', guatemala: 'Guatemala' };
+  var TURK_SUGAR = { sade: 'sade', az: 'az şekerli', orta: 'orta şekerli', sekerli: 'şekerli' };
+
+  function coffeeName(a) {
+    var cold = a.temp === 'soguk', milk = a.milk === 'var', base = '', milkInBase = false;
+    switch (a.method) {
+      case 'espresso':
+        if (milk && (cold || a.foam === 'az' || a.foam === 'bol')) {
+          milkInBase = true;
+          base = cold ? 'buzlu latte' : (a.foam === 'bol' ? 'cappuccino' : 'latte');
+        } else base = (cold ? 'buzlu ' : '') + (a.dose === 'cift' ? 'doppio' : 'espresso');
+        break;
+      case 'filtre': base = cold ? 'buzlu filtre kahve' : 'filtre kahve'; break;
+      case 'french': base = 'French press kahve'; break;
+      case 'moka': base = 'moka pot kahvesi'; break;
+      case 'turk': base = a.turkBrew === 'kum' ? 'kumda Türk kahvesi' : 'Türk kahvesi'; break;
+      case 'coldbrew': base = 'cold brew'; break;
+    }
+    var adj = [];
+    if (a.method === 'turk') {
+      if (TURK_SUGAR[a.sugar]) adj.push(TURK_SUGAR[a.sugar]);
+      if (a.foam === 'bol') adj.push('bol köpüklü');
+      if (a.foam === 'az') adj.push('az köpüklü');
+    }
+    if (a.decaf === 'kafeinsiz') adj.push('kafeinsiz');
+    if (SYRUP_ADJ[a.syrup]) adj.push(SYRUP_ADJ[a.syrup]);
+    if (milk && a.milkType && !(milkInBase && a.milkType === 'inek')) adj.push(MILK_ADJ[a.milkType]);
+    var bean = a.bean === 'arabica' ? ORIGIN[a.origin] : a.bean === 'robusta' ? 'Robusta' : 'harman';
+    var name = adj.concat([ROAST_ADJ[a.roast], bean, base].filter(Boolean).join(' ')).join(', ');
+    return name.charAt(0).toLocaleUpperCase('tr-TR') + name.slice(1);
+  }
+
+  var CAFE_LOC = { mahalle: 'Mahalle kahvecisinde', zincir: 'Zincir kafede', nitelikli: 'Nitelikli kahvecide', kitap: 'Kitap kafede' };
+  var SEAT_LOC = { cam: 'cam kenarında', priz: 'priz yanında', kose: 'köşe masada', disari: 'dışarıda' };
+  function whereLine(a) {
+    if (a.place === 'kafe') return CAFE_LOC[a.cafeType] + ', ' + SEAT_LOC[a.seat];
+    return a.place === 'ev' ? 'Evde, kendi mutfağında' : 'Yolda, elinde';
+  }
+
+  function quip(a, k) {
+    var q = [];
+    if (a.bean === 'robusta' && a.decaf === 'kafeinsiz') q.push('Kafeinsiz Robusta. En kafeinli çekirdeği seçip kafeinini çıkarttın. Cesur bir çelişki.');
+    if (a.seat === 'priz') q.push('Priz yanı. Kahve bahane, şarj şart.');
+    if (a.cup === 'termos') q.push('Kendi termosunu getirdin. Bir karton bardak daha az, gezegen not aldı.');
+    if (a.method === 'turk' && a.side === 'lokum') q.push('Türk kahvesi ve lokum. Bazı kombinasyonlar 138 milyonda bir değil, her zaman doğru.');
+    if (a.syrup === 'karamel' && a.sugar === 'bol') q.push('Karamel şurubu ve bol şeker. Bu bir kahve değil, bir tatlı tabağı.');
+    if (a.origin === 'etiyopya') q.push('Etiyopya, Arabica\'nın anavatanı. Kahve bu siparişle memleketine dönmüş oldu.');
+    if (a.dose === 'cift' && a.size === 'buyuk') q.push('Büyük boy, çift shot. Bugün uyumayı düşünmüyorsun anlaşılan.');
+    if (a.seat === 'disari' && a.temp === 'soguk') q.push('Dışarıda, buz gibi bir kahve. Hava durumu bu kararı onaylıyor mu bilmiyoruz.');
+    var generic = [
+      'Barista bu siparişi duyunca kısa bir sessizlik oldu.',
+      'Bu kombinasyonu bugüne kadar kimse sipariş etmemiş olabilir. İlk sen ol.',
+      'Bu kahveyi bir daha görmek için çok sabırlı olman gerek.',
+      'Tadını bilmiyoruz ama kararları sağlam.',
+      'Menüde yazmıyor ama menüde var. 138 milyonun güzelliği bu.'
+    ];
+    return q.length ? q[k % q.length] : generic[k % generic.length];
+  }
+
+  /* ---------- Hesaplar ---------- */
+  var N = count(0, {});
+  var fmt = function (n) { return n.toLocaleString('tr-TR'); };
+  var fmt1 = function (n) { return n.toLocaleString('tr-TR', { minimumFractionDigits: 1, maximumFractionDigits: 1 }); };
+  var round100 = function (n) { return Math.round(n / 100) * 100; };
+  var YEAR_DAYS = 365.25, SAPIENS = 300000, TR_POP = 86092168;
+  var dayYears = N / YEAR_DAYS;
+  var minYears = N / (60 * 24 * YEAR_DAYS);
+  var calc = {
+    total: fmt(N),
+    secYears: fmt1(N / (3600 * 24 * YEAR_DAYS)),
+    dayYears: 'yaklaşık ' + fmt(round100(dayYears)) + ' yılda',
+    dayLeft: fmt(Math.round((dayYears - SAPIENS) / 1000) * 1000) + ' yıllık',
+    trLeft: fmt(N - TR_POP),
+    minYears: 'yaklaşık ' + fmt(Math.round(minYears)) + ' yılda',
+    startYear: String(new Date().getFullYear() - Math.round(minYears)),
+    stackKm: 'yaklaşık ' + fmt1(N * 0.1 / 1e6) + ' km',
+    routes: fmt(routes(0, {}))
+  };
+
+  // Örnek rota: sabit cevaplar dışında sorulan her sorunun seçenek sayısı
+  var EX = { place: 'ev', temp: 'sicak', method: 'filtre', bean: 'arabica', milk: 'yok' };
+  var exFactors = QUESTIONS.filter(function (q) { return COND_KEYS.indexOf(q.id) < 0 && isAsked(q, EX); })
+    .map(function (q) { return { label: q.label, n: optionsFor(q, EX).length }; });
+  calc.exTotal = fmt(exFactors.reduce(function (p, f) { return p * f.n; }, 1));
+
+  // Node ile test edebilmek için
+  if (typeof document === 'undefined') {
+    globalThis.KK = { N: N, count: count, unrank: unrank, routes: routes, coffeeName: coffeeName, whereLine: whereLine, calc: calc, exFactors: exFactors, QUESTIONS: QUESTIONS };
+    return;
+  }
+
+  /* ---------- Sayfa ---------- */
+  document.querySelectorAll('[data-fill]').forEach(function (el) {
+    var v = calc[el.getAttribute('data-fill')];
+    if (v !== undefined) el.textContent = v;
+  });
+  document.getElementById('lookupIn').placeholder = '1 – ' + fmt(N);
+
+  document.getElementById('exChips').innerHTML = exFactors.map(function (f, i) {
+    return (i ? '<span class="times" aria-hidden="true">×</span>' : '') + '<span class="chip">' + f.label + ' <b>' + f.n + '</b></span>';
+  }).join('') + '<span class="eq">= ' + calc.exTotal + '</span>';
+
+  var branches = [{ v: 'ev', t: 'Evde' }, { v: 'kafe', t: 'Kafede' }, { v: 'yol', t: 'Yolda' }];
+  document.getElementById('branchBody').innerHTML = branches.map(function (b) {
+    var n = count(1, { place: b.v });
+    var w = Math.max(3, Math.round(n / N * 90));
+    return '<tr><td>' + b.t + '<span class="share" style="width:' + w + 'px" aria-hidden="true"></span></td><td class="r">' + fmt(n) + '</td></tr>';
+  }).join('') + '<tr class="total"><td>Toplam</td><td class="r">' + fmt(N) + '</td></tr>';
+
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var seen = new Set();
+  var els = {
+    slip: document.getElementById('slip'), no: document.getElementById('slipNo'), of: document.getElementById('slipOf'),
+    name: document.getElementById('slipName'), where: document.getElementById('slipWhere'), lines: document.getElementById('slipLines'),
+    quip: document.getElementById('slipQuip'), foot: document.getElementById('slipFoot'),
+    tally: document.getElementById('tally'), note: document.getElementById('tallyNote'),
+    seen: document.getElementById('tSeen'), left: document.getElementById('tLeft'), pct: document.getElementById('tPct'),
+    err: document.getElementById('lookupErr'), input: document.getElementById('lookupIn')
+  };
+
+  function randomIndex() {
+    if (window.crypto && crypto.getRandomValues) {
+      // Modülo sapmasını önlemek için reddetme örneklemesi
+      var buf = new Uint32Array(1), lim = Math.floor(4294967296 / N) * N;
+      do { crypto.getRandomValues(buf); } while (buf[0] >= lim);
+      return buf[0] % N;
+    }
+    return Math.floor(Math.random() * N);
+  }
+
+  function show(k) {
+    var r = unrank(k), a = r.a;
+    seen.add(k);
+    els.no.textContent = 'No. ' + fmt(k + 1);
+    els.of.textContent = fmt(N) + ' kahveden biri';
+    els.name.textContent = coffeeName(a);
+    els.where.textContent = whereLine(a);
+    els.lines.innerHTML = r.steps.filter(function (s) { return ['place', 'cafeType', 'seat'].indexOf(s.q.id) < 0; })
+      .map(function (s) { return '<li><span class="k">' + s.q.label + '</span><span class="v">' + s.o.t + '</span></li>'; }).join('');
+    els.quip.textContent = quip(a, k);
+    els.foot.textContent = r.steps.length + ' karar · Bu kahveyi tekrar çekme ihtimalin ' + fmt(N) + "'de 1";
+    els.slip.hidden = false;
+    els.tally.hidden = false; els.note.hidden = false;
+    els.seen.textContent = fmt(seen.size);
+    els.left.textContent = fmt(N - seen.size);
+    var p = seen.size / N * 100;
+    els.pct.textContent = '%' + p.toLocaleString('tr-TR', { maximumSignificantDigits: 2, maximumFractionDigits: 10 });
+    if (!reduceMotion) { els.slip.classList.remove('flash'); void els.slip.offsetWidth; els.slip.classList.add('flash'); }
+  }
+
+  function rollNumber(final) {
+    if (reduceMotion) { show(final); return; }
+    var t0 = null, dur = 520;
+    els.slip.hidden = false;
+    function step(t) {
+      if (!t0) t0 = t;
+      if (t - t0 < dur) {
+        els.no.textContent = 'No. ' + fmt(Math.floor(Math.random() * N) + 1);
+        requestAnimationFrame(step);
+      } else show(final);
+    }
+    requestAnimationFrame(step);
+  }
+
+  var rollBtn = document.getElementById('roll');
+  rollBtn.addEventListener('click', function () {
+    els.err.textContent = '';
+    rollNumber(randomIndex());
+    rollBtn.textContent = 'Bir tane daha çek';
+  });
+
+  function goTo(k) {
+    els.err.textContent = '';
+    show(k);
+    els.slip.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+  }
+
+  function lookup() {
+    var raw = els.input.value.replace(/[.\s,]/g, '');
+    var n = /^\d+$/.test(raw) ? parseInt(raw, 10) : NaN;
+    if (!(n >= 1 && n <= N)) {
+      els.err.textContent = !raw ? 'Bir numara yaz.' : n > N ? 'O kadar kahvemiz yok. Henüz.' : '1 ile ' + fmt(N) + ' arasında bir sayı yaz.';
+      return;
+    }
+    goTo(n - 1);
+  }
+  document.getElementById('lookupGo').addEventListener('click', lookup);
+  els.input.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') { e.preventDefault(); lookup(); }
+  });
+
+  document.querySelectorAll('[data-jump]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var j = b.getAttribute('data-jump');
+      var k = j === 'first' ? 0 : j === 'last' ? N - 1 : Math.floor((N - 1) / 2);
+      els.input.value = fmt(k + 1);
+      goTo(k);
+    });
+  });
+})();
+</script>
+</body>
+</html>
