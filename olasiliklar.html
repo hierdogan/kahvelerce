@@ -172,13 +172,32 @@
     .slip.flash { animation: none; }
     .cta { transition: none; }
   }
+
+  /* Menü */
+  .top-inner { flex-wrap: wrap; row-gap: 0; }
+  .nav {
+    display: flex; flex-basis: 100%; gap: 8px; padding: 3px 0 4px;
+    overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch;
+  }
+  .nav::-webkit-scrollbar { display: none; }
+  .nav a {
+    flex: none; display: inline-flex; align-items: center; min-height: 36px; padding: 6px 8px;
+    border: 1px solid #DCCBB5; border-radius: 999px; background: rgba(255, 253, 249, 0.7);
+    white-space: nowrap; font-family: var(--sans); font-size: 0.78rem;
+    color: var(--ink-soft); text-decoration: none;
+  }
+  .nav a:hover { color: var(--ink); border-color: #BE8B4F; }
+  .nav a[aria-current="page"] { background: #F4DED4; border-color: #A6432A; color: #86331F; font-weight: 700; }
+  .nav a:focus-visible { outline: 3px solid #A6432A; outline-offset: -1px; }
+  @media (max-width: 374px) { .nav { gap: 6px; } .nav a { padding: 6px 7px; } }
+  @media (min-width: 600px) { .nav a { padding: 6px 12px; font-size: 0.86rem; } }
 </style>
 </head>
 <body>
 <header class="top">
   <div class="top-inner">
     <a class="brand" href="./">kahvelerce<span>.com</span></a>
-    <a class="top-link" href="./">← Uygulamaya dön</a>
+    <nav class="nav" aria-label="Site menüsü"><a href="./">Kahve Seçici</a><a href="blog/gunluk-kararlar.html">Seçim Paradoksu</a><a href="olasiliklar.html" aria-current="page">138M Seçenek</a></nav>
   </div>
   <div class="bar" aria-hidden="true"></div>
 </header>

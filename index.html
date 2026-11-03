@@ -197,6 +197,7 @@
     padding: 14px 16px; font-size: 0.95rem; text-align: left; margin: 22px 0;
   }
   .stat b { color: var(--green-deep); font-variant-numeric: tabular-nums; }
+  .stat a { display: inline-block; margin-top: 6px; color: var(--rust); font-weight: 700; text-underline-offset: 3px; }
   .recap-title { font-size: 1.2rem; text-align: left; margin: 0 0 8px; }
   .recap { list-style: none; padding: 0; margin: 0 0 26px; text-align: left; counter-reset: r; border-top: 1px solid var(--line); }
   .recap li {
@@ -269,12 +270,32 @@
     .screen, .progress-cover, .opt { transition: none; }
     .counter.bump, .steam path { animation: none; }
   }
+
+  /* Menü */
+  .top-inner { flex-wrap: wrap; row-gap: 0; }
+  .nav {
+    display: flex; flex-basis: 100%; gap: 8px; padding: 3px 0 4px;
+    overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch;
+  }
+  .nav::-webkit-scrollbar { display: none; }
+  .nav a {
+    flex: none; display: inline-flex; align-items: center; min-height: 36px; padding: 6px 8px;
+    border: 1px solid #DCCBB5; border-radius: 999px; background: rgba(255, 253, 249, 0.7);
+    white-space: nowrap; font-family: var(--sans); font-size: 0.78rem;
+    color: var(--ink-soft); text-decoration: none;
+  }
+  .nav a:hover { color: var(--ink); border-color: #BE8B4F; }
+  .nav a[aria-current="page"] { background: #F4DED4; border-color: #A6432A; color: #86331F; font-weight: 700; }
+  .nav a:focus-visible { outline: 3px solid #A6432A; outline-offset: -1px; }
+  @media (max-width: 374px) { .nav { gap: 6px; } .nav a { padding: 6px 7px; } }
+  @media (min-width: 600px) { .nav a { padding: 6px 12px; font-size: 0.86rem; } }
 </style>
 </head>
 <body>
 <header class="top">
   <div class="top-inner">
     <a class="brand" href="./">kahvelerce<span>.com</span></a>
+    <nav class="nav" aria-label="Site menüsü" id="siteNav"><a href="./" aria-current="page">Kahve Seçici</a><a href="blog/gunluk-kararlar.html">Seçim Paradoksu</a><a href="olasiliklar.html">138M Seçenek</a></nav>
     <span class="counter" id="counter" aria-live="polite" aria-atomic="true" hidden>Karar: 0</span>
   </div>
   <div class="progress-wrap" id="progressWrap" hidden>
@@ -809,6 +830,7 @@
   function updateHeader(bump) {
     var show = view === 'q' || view === 'result';
     els.counter.hidden = !show;
+    var nav = document.getElementById('siteNav'); if (nav) nav.hidden = show;
     els.progressWrap.hidden = !show;
     els.counter.textContent = 'Karar: ' + history.length;
     if (bump && !reduceMotion) {
@@ -968,7 +990,7 @@
         '<p class="quip">' + quip(n) + '</p>' +
         compareHTML(n) +
         '<p class="stat">Bu menüyle toplam <b>' + all.n.toLocaleString('tr-TR') + '</b> farklı kahve kombinasyonu mümkün. ' +
-          'En kısa rota <b>' + all.min + '</b>, en uzun rota <b>' + all.max + '</b> karar sürüyor.</p>' +
+          'En kısa rota <b>' + all.min + '</b>, en uzun rota <b>' + all.max + '</b> karar sürüyor. <a href="olasiliklar.html">Bu sayı nereden çıktı? →</a></p>' +
         '<h3 class="recap-title">Verdiğin kararlar</h3>' +
         '<ol class="recap">' + recap + '</ol>' +
         '<div class="actions">' +
